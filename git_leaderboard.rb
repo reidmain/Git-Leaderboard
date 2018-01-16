@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+require "optparse"
+
 require_relative "./git_commits.rb"
 
 class AuthorSummary
@@ -30,10 +32,18 @@ class AuthorSummary
 end
 
 if __FILE__ == $PROGRAM_NAME
-	git_repo = ARGV[0]
-	git_repo ||= Dir.pwd
+	git_repo_path ||= Dir.pwd
 
-	commits = commits_for_git_repo(git_repo)
+	OptionParser.new do |parser|
+		parser.on(
+			"--git-repo=PATH",
+			"The path to the git repository. Defaults to the directory the script is run from."
+			) do |option_git_repo_path|
+				git_repo_path = option_git_repo_path
+			end
+	end.parse!
+
+	commits = commits_for_git_repo(git_repo_path)
 
 	author_summaries = Hash.new()
 
