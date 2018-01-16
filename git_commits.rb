@@ -13,7 +13,7 @@ class Commit
 		end
 
 		def to_s
-			return "+#{additions}\t-#{deletions}\t#{filename}"
+			return "+#{@additions}\t-#{@deletions}\t#{@filename}"
 		end
 	end
 
@@ -37,7 +37,7 @@ class Commit
 	end
 
 	def to_s
-		return "Author: #{author_name}\nEmail: #{author_email}\nAdditions: #{additions}\nDeletions: #{deletions}\n#{file_modifications.join("\n")}"
+		return "Author: #{@author_name}\nEmail: #{@author_email}\nAdditions: #{@additions}\nDeletions: #{@deletions}\n#{@file_modifications.join("\n")}"
 	end
 end
 
@@ -45,7 +45,8 @@ def commits_for_git_repo(git_repo)
 	commits = []
 
 	Dir.chdir(git_repo) do
-		git_log = `git log --numstat --pretty=format:'Author: %an%nEmail: %aE'`
+		# We can ignore merges because those shouldn't be making any additional changes.
+		git_log = `git log --numstat --no-merges --pretty=format:'Author: %an%nEmail: %aE'`
 
 		current_commit = nil
 		git_log.each_line do |line|
