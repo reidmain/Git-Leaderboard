@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 
+require "json"
 require "optparse"
 
 class Commit
@@ -43,7 +44,7 @@ class Commit
 	end
 end
 
-def commits_for_git_repo(git_repo)
+def commits_for_git_repo(git_repo, normalized_names = {})
 	commits = []
 
 	Dir.chdir(git_repo) do
@@ -55,6 +56,9 @@ def commits_for_git_repo(git_repo)
 			# To detect if we are looking at a new commit we must look for the 'Author:' line.
 			if author_match_data = line.match(/^Author: (.+)/)
 				author = author_match_data[1]
+				if normalized_author = normalized_names[author]
+					author = normalized_author
+				end
 				current_commit = Commit.new(author)
 
 				commits.push(current_commit)
@@ -82,17 +86,36 @@ end
 
 if __FILE__ == $PROGRAM_NAME
 	git_repo_path ||= Dir.pwd
+	normalized_names = {}
 
 	OptionParser.new do |parser|
+		parser.accept(JSON) do |possible_json|
+			if File.file?(possible_json)
+				json_data = File.read(possible_json)
+				json = JSON.parse(json_data)
+			else
+				json = JSON.parse(possible_json)
+			end
+		end
+
 		parser.on(
 			"--git-repo=PATH",
-			"The path to the git repository. Defaults to the directory the script is run from."
+			"The path to the git repository. Defaults to the directory the script is run from.",
+			String
 			) do |option_git_repo_path|
 				git_repo_path = option_git_repo_path
 			end
+
+		parser.on(
+			"--normalized-names DATA",
+			"Either the path to a JSON file or a JSON string that contains a hash of normalized usernames.",
+			JSON
+			) do |json|
+				normalized_names = json
+			end
 	end.parse!
 
-	commits = commits_for_git_repo(git_repo_path)
+	commits = commits_for_git_repo(git_repo_path, normalized_names)
 
 	commits.each do |commit|
 		puts "#{commit}\n\n"

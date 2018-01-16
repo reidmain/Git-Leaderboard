@@ -33,19 +33,38 @@ end
 
 if __FILE__ == $PROGRAM_NAME
 	git_repo_path ||= Dir.pwd
+	normalized_names = {}
 
 	OptionParser.new do |parser|
+		parser.accept(JSON) do |possible_json|
+			if File.file?(possible_json)
+				json_data = File.read(possible_json)
+				json = JSON.parse(json_data)
+			else
+				json = JSON.parse(possible_json)
+			end
+		end
+
 		parser.on(
 			"--git-repo=PATH",
-			"The path to the git repository. Defaults to the directory the script is run from."
+			"The path to the git repository. Defaults to the directory the script is run from.",
+			String
 			) do |option_git_repo_path|
 				git_repo_path = option_git_repo_path
 			end
+
+		parser.on(
+			"--normalized-names DATA",
+			"Either the path to a JSON file or a JSON string that contains a hash of normalized usernames.",
+			JSON
+			) do |json|
+				normalized_names = json
+			end
 	end.parse!
 
-	commits = commits_for_git_repo(git_repo_path)
+	commits = commits_for_git_repo(git_repo_path, normalized_names)
 
-	author_summaries = Hash.new()
+	author_summaries = {}
 
 	commits.each do |commit|
 		author_name = commit.author_name
