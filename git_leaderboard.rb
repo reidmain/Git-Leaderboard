@@ -34,6 +34,7 @@ end
 if __FILE__ == $PROGRAM_NAME
 	git_repo_path ||= Dir.pwd
 	normalized_names = {}
+	banned_filenames = []
 
 	OptionParser.new do |parser|
 		parser.accept(JSON) do |possible_json|
@@ -54,15 +55,23 @@ if __FILE__ == $PROGRAM_NAME
 			end
 
 		parser.on(
-			"--normalized-names DATA",
+			"--normalized-names JSON",
 			"Either the path to a JSON file or a JSON string that contains a hash of normalized usernames.",
 			JSON
 			) do |json|
 				normalized_names = json
 			end
+
+		parser.on(
+			"--banned-filenames JSON",
+			"Either the path to a JSON file or a JSON string that contains an array of banned filenames. Regex is acceptable..",
+			JSON
+			) do |json|
+				banned_filenames = json
+			end
 	end.parse!
 
-	commits = commits_for_git_repo(git_repo_path, normalized_names)
+	commits = commits_for_git_repo(git_repo_path, normalized_names, banned_filenames)
 
 	author_summaries = {}
 
@@ -75,7 +84,9 @@ if __FILE__ == $PROGRAM_NAME
 			author_summaries[author_name] = author_summary
 		end
 
-		author_summary.append(commit)
+		if commit.file_modifications.count > 0
+			author_summary.append(commit)
+		end
 	end
 
 	sorted_author_summaries_by_num_commits = author_summaries.values.sort { |x, y| y.commits <=> x.commits }

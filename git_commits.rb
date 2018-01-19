@@ -44,8 +44,9 @@ class Commit
 	end
 end
 
-def commits_for_git_repo(git_repo, normalized_names = {})
+def commits_for_git_repo(git_repo, normalized_names = {}, banned_filenames)
 	commits = []
+	banned_filenames_regexp = Regexp.union(banned_filenames.map { |string| Regexp.new(string) })
 
 	Dir.chdir(git_repo) do
 		# We can ignore merges because those shouldn't be making any additional changes.
@@ -72,9 +73,15 @@ def commits_for_git_repo(git_repo, normalized_names = {})
 
 			# If we find a line that represents a file changed, append it to the current commit.
 			if file_modified_match_data = line.match(/^(\d+)\t+(\d+)\t(.*)/)
+				filename = file_modified_match_data[3]
+
+				if filename.match(banned_filenames_regexp)
+					puts filename
+					next
+				end
+
 				additions = file_modified_match_data[1].to_i
 				deletions = file_modified_match_data[2].to_i
-				filename = file_modified_match_data[3]
 				file_modification = Commit::FileModification.new(filename, additions, deletions)
 				current_commit.add_file_modification(file_modification)
 			end
@@ -87,6 +94,7 @@ end
 if __FILE__ == $PROGRAM_NAME
 	git_repo_path ||= Dir.pwd
 	normalized_names = {}
+	banned_filenames = []
 
 	OptionParser.new do |parser|
 		parser.accept(JSON) do |possible_json|
@@ -107,15 +115,23 @@ if __FILE__ == $PROGRAM_NAME
 			end
 
 		parser.on(
-			"--normalized-names DATA",
+			"--normalized-names JSON",
 			"Either the path to a JSON file or a JSON string that contains a hash of normalized usernames.",
 			JSON
 			) do |json|
 				normalized_names = json
 			end
+
+		parser.on(
+			"--banned-filenames JSON",
+			"Either the path to a JSON file or a JSON string that contains an array of banned filenames. Regex is acceptable..",
+			JSON
+			) do |json|
+				banned_filenames = json
+			end
 	end.parse!
 
-	commits = commits_for_git_repo(git_repo_path, normalized_names)
+	commits = commits_for_git_repo(git_repo_path, normalized_names, banned_filenames)
 
 	commits.each do |commit|
 		puts "#{commit}\n\n"
