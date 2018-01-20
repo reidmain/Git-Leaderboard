@@ -76,7 +76,6 @@ def commits_for_git_repo(git_repo, normalized_names = {}, banned_filenames)
 				filename = file_modified_match_data[3]
 
 				if filename.match(banned_filenames_regexp)
-					puts filename
 					next
 				end
 

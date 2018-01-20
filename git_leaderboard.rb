@@ -90,5 +90,42 @@ if __FILE__ == $PROGRAM_NAME
 	end
 
 	sorted_author_summaries_by_num_commits = author_summaries.values.sort { |x, y| y.commits <=> x.commits }
-	puts sorted_author_summaries_by_num_commits
+	total_commits = sorted_author_summaries_by_num_commits.sum { |x| x.commits }
+	total_additions = sorted_author_summaries_by_num_commits.sum { |x| x.additions }
+	total_deletions = sorted_author_summaries_by_num_commits.sum { |x| x.deletions }
+	total_files_changed = sorted_author_summaries_by_num_commits.sum { |x| x.files_modified }
+
+	csv_file = nil
+	filename = "output"
+	if (filename)
+		csv_file = File.open("#{filename}.csv", "w")
+		csv_file.write("Author,Commits,% of Commits,Additions,% of Additions,Deletions,% of Deletions,Files Changed,% of Files Changed")
+	end
+
+	sorted_author_summaries_by_num_commits.each do |author_summary|
+		author = author_summary.author_name
+		num_commits = author_summary.commits
+		num_additions = author_summary.additions
+		num_deletions = author_summary.deletions
+		num_files_changed = author_summary.files_modified
+
+		num_commits_percentage = (num_commits / total_commits.to_f * 100).round(2)
+		num_additions_percentage = (num_additions / total_additions.to_f * 100).round(2)
+		num_deletions_percentage = (num_deletions / total_deletions.to_f * 100).round(2)
+		num_files_changed_percentage = (num_files_changed / total_files_changed.to_f * 100).round(2)
+
+		puts author
+		puts "\tCommits: #{num_commits} (#{num_commits_percentage}%)"
+		puts "\tAdditions: #{num_additions} (#{num_additions_percentage}%)"
+		puts "\tDeletions: #{num_deletions} (#{num_deletions_percentage}%)"
+		puts "\tFiles Changed: #{num_files_changed} (#{num_files_changed_percentage}%)"
+
+		if (csv_file)
+			csv_file.write("\n#{author},#{num_commits},#{num_commits_percentage},#{num_additions},#{num_additions_percentage},#{num_deletions},#{num_deletions_percentage},#{num_files_changed},#{num_files_changed_percentage}")
+		end
+	end
+
+	if (csv_file)
+		csv_file.close
+	end
 end
