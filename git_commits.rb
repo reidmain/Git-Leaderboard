@@ -49,9 +49,9 @@ class Commit
 	end
 end
 
-def commits_for_git_repo(git_repo, normalized_names = {}, banned_filenames = [], verbose = false)
+def commits_for_git_repo(git_repo, normalized_names = {}, banned_paths = [], verbose = false)
 	commits = []
-	banned_filenames_regexp = Regexp.union(banned_filenames.map { |string| Regexp.new(string) })
+	banned_paths_regexp = Regexp.union(banned_paths.map { |string| Regexp.new(string) })
 
 	Dir.chdir(git_repo) do
 		git_log_output = `git log --numstat --no-merges --pretty=format:'Author: %an%nEmail: %aE%nHash: %H' -z`
@@ -91,7 +91,7 @@ def commits_for_git_repo(git_repo, normalized_names = {}, banned_filenames = [],
 						original_path = file_modifications_string[i - 1]
 					end
 
-					if path.match(banned_filenames_regexp).nil? == true
+					if path.match(banned_paths_regexp).nil? == true
 						file_modification = Commit::FileModification.new(path, original_path, additions, deletions)
 						commit.add_file_modification(file_modification)
 
@@ -166,8 +166,8 @@ class ScriptOptions
 		end
 
 		option_parser.on(
-			"--banned-filenames JSON",
-			"A JSON array of regular expressions used to omit specific file modifications.",
+			"--banned-paths JSON",
+			"A JSON array of regular expressions used to omit file modifications to specific paths.",
 			"Can be either a JSON string or a path to a JSON file.",
 			JSON
 			) do |option_json|
