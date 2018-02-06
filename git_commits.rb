@@ -61,9 +61,13 @@ def commits_for_git_repo(git_repo, normalized_names = {}, banned_filenames = [],
 			author_email = commit_match[1]
 			commit_hash = commit_match[2]
 
+			if verbose
+				puts "==============================\nAuthor: #{author_name}\nHash: #{commit_hash}\nEmail: #{author_email}"
+			end
+
 			if normalized_author_name = normalized_names[author_name]
 				if verbose
-					puts "#{commit_hash}: Normalized '#{author_name}' to '#{normalized_author_name}'"
+					puts "NORMALIZED '#{author_name}' to '#{normalized_author_name}'"
 				end
 
 				author_name = normalized_author_name
@@ -90,8 +94,12 @@ def commits_for_git_repo(git_repo, normalized_names = {}, banned_filenames = [],
 					if path.match(banned_filenames_regexp).nil? == true
 						file_modification = Commit::FileModification.new(path, original_path, additions, deletions)
 						commit.add_file_modification(file_modification)
+
+						if verbose
+							puts file_modification
+						end
 					elsif verbose
-						puts "#{commit_hash}: Ignored #{path}"
+						puts "IGNORED #{path}"
 					end
 				end
 
@@ -186,6 +194,4 @@ if __FILE__ == $PROGRAM_NAME
 		script_options.normalized_names,
 		script_options.banned_paths,
 		script_options.verbose)
-
-	puts commits.join("\n\n")
 end
