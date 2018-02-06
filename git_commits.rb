@@ -49,7 +49,7 @@ class Commit
 	end
 end
 
-def commits_for_git_repo(git_repo, normalized_names = {}, banned_filenames = [])
+def commits_for_git_repo(git_repo, normalized_names = {}, banned_filenames = [], verbose = false)
 	commits = []
 	banned_filenames_regexp = Regexp.union(banned_filenames.map { |string| Regexp.new(string) })
 
@@ -58,16 +58,18 @@ def commits_for_git_repo(git_repo, normalized_names = {}, banned_filenames = [])
 
 		git_log_output.scan(/Author: (.*)\nEmail: (.*)\nHash: (.*)[\n]?(.*)\x0/).each do |commit_match|
 			author_name = commit_match[0]
-
-			if normalized_author = normalized_names[author_name]
-				author_name = normalized_author
-			end
-
 			author_email = commit_match[1]
 			commit_hash = commit_match[2]
 
-			current_commit = Commit.new(author_name, author_email, commit_hash)
-			commits.push(current_commit)
+			if normalized_author_name = normalized_names[author_name]
+				if verbose
+					puts "#{commit_hash}: Normalized '#{author_name}' to '#{normalized_author_name}'"
+				end
+
+				author_name = normalized_author_name
+			end
+
+			commit = Commit.new(author_name, author_email, commit_hash)
 
 			file_modifications_string = commit_match[3].split("\x0")
 			i = 0
@@ -87,12 +89,16 @@ def commits_for_git_repo(git_repo, normalized_names = {}, banned_filenames = [])
 
 					if path.match(banned_filenames_regexp).nil? == true
 						file_modification = Commit::FileModification.new(path, original_path, additions, deletions)
-						current_commit.add_file_modification(file_modification)
+						commit.add_file_modification(file_modification)
+					elsif verbose
+						puts "#{commit_hash}: Ignored #{path}"
 					end
 				end
 
 				i += 1
 			end
+
+			commits.push(commit)
 		end
 	end
 
@@ -161,10 +167,10 @@ class ScriptOptions
 		end
 
 		option_parser.on(
-			"--verbose flag",
+			"--verbose",
 			"A switch to determine if actions taken should be outputted to the console.",
 			"Defaults to off.",
-			FalseClass
+			TrueClass
 			) do |flag|
 				@verbose = flag
 		end
@@ -178,7 +184,8 @@ if __FILE__ == $PROGRAM_NAME
 
 	commits = commits_for_git_repo(script_options.git_repository_path,
 		script_options.normalized_names,
-		script_options.banned_paths)
+		script_options.banned_paths,
+		script_options.verbose)
 
 	puts commits.join("\n\n")
 end
