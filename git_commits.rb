@@ -49,7 +49,7 @@ class Commit
 	end
 end
 
-def commits_for_git_repo(git_repo, normalized_names = {}, banned_filenames)
+def commits_for_git_repo(git_repo, normalized_names = {}, banned_filenames = [])
 	commits = []
 	banned_filenames_regexp = Regexp.union(banned_filenames.map { |string| Regexp.new(string) })
 
@@ -99,49 +99,86 @@ def commits_for_git_repo(git_repo, normalized_names = {}, banned_filenames)
 	return commits
 end
 
-if __FILE__ == $PROGRAM_NAME
-	git_repo_path ||= Dir.pwd
-	normalized_names = {}
-	banned_filenames = []
+class ScriptOptions
+	attr_reader :git_repository_path
+	attr_reader :normalized_names
+	attr_reader :banned_names
+	attr_reader :banned_paths
+	attr_reader :verbose
 
-	OptionParser.new do |parser|
-		parser.accept(JSON) do |possible_json|
-			if File.file?(possible_json)
-				json_data = File.read(possible_json)
-				json = JSON.parse(json_data)
+	def initialize(args)
+		@git_repository_path = Dir.pwd
+		@normalized_names = {}
+		@banned_paths = []
+
+		option_parser = OptionParser.new
+
+		option_parser.accept(JSON) do |option_json|
+			if File.file?(option_json)
+				json_string = File.read(option_json)
+				JSON.parse(json_string)
 			else
-				json = JSON.parse(possible_json)
+				JSON.parse(option_json)
 			end
 		end
 
-		parser.on(
-			"--git-repo=PATH",
-			"The path to the git repository. Defaults to the directory the script is run from.",
-			String
-			) do |option_git_repo_path|
-				git_repo_path = option_git_repo_path
-			end
+		option_parser.on(
+			"--git-repository PATH",
+			String,
+			"Path to the git repository to analyze.",
+			"Defaults to the current directory if no path is provided."
+			) do |option_path|
+				@git_repository_path = option_path
+		end
 
-		parser.on(
+		option_parser.on(
 			"--normalized-names JSON",
-			"Either the path to a JSON file or a JSON string that contains a hash of normalized usernames.",
+			"A JSON object where the keys are the committers' names and the values are what the names should be normalized to.",
+			"For when a single author has commited under multiple names or for that one crazy committer whose name makes absolutely no sense.",
+			"Can be either a JSON string or a path to a JSON file.",
 			JSON
-			) do |json|
-				normalized_names = json
-			end
+			) do |option_json|
+				@normalized_names = option_json
+		end
 
-		parser.on(
+		option_parser.on(
+			"--banned-names JSON",
+			"A JSON array of author names whose commits should be ignored.",
+			"Primarily designed for authors whose commits are automated.",
+			"Can be either a JSON string or a path to a JSON file.",
+			JSON
+			) do |option_json|
+				@banned_names = option_json
+		end
+
+		option_parser.on(
 			"--banned-filenames JSON",
-			"Either the path to a JSON file or a JSON string that contains an array of banned filenames. Regex is acceptable..",
+			"A JSON array of regular expressions used to omit specific file modifications.",
+			"Can be either a JSON string or a path to a JSON file.",
 			JSON
-			) do |json|
-				banned_filenames = json
-			end
-	end.parse!
+			) do |option_json|
+				@banned_paths = option_json
+		end
 
-	commits = commits_for_git_repo(git_repo_path, normalized_names, banned_filenames)
+		option_parser.on(
+			"--verbose flag",
+			"A switch to determine if actions taken should be outputted to the console.",
+			"Defaults to off.",
+			FalseClass
+			) do |flag|
+				@verbose = flag
+		end
 
-	commits.each do |commit|
-		puts "#{commit}\n\n"
+		option_parser.parse(args)
 	end
+end
+
+if __FILE__ == $PROGRAM_NAME
+	script_options = ScriptOptions.new(ARGV)
+
+	commits = commits_for_git_repo(script_options.git_repository_path,
+		script_options.normalized_names,
+		script_options.banned_paths)
+
+	puts commits.join("\n\n")
 end
