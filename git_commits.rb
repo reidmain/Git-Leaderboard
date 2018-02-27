@@ -48,7 +48,7 @@ class Commit
 	end
 end
 
-def commits_for_git_repo(git_repo, normalized_names = {}, banned_names = [], banned_paths = [], verbose = false)
+def commits_for_git_repo(git_repository_path, normalized_names = {}, banned_names = [], banned_paths = [], verbose = false)
 	commits = []
 
 	# We assume the banned paths are all regular expressions so we union them together to make checking for any matches easier.
@@ -56,7 +56,7 @@ def commits_for_git_repo(git_repo, normalized_names = {}, banned_names = [], ban
 
 	# Change to the directory that contains the git repository.
 	# Changing directly to the directory is easier than calling commands on specific paths. It is easier to assume inside a certain scope you will always be working in the correct directory.
-	Dir.chdir(git_repo) do
+	Dir.chdir(git_repository_path) do
 		# We are using git log because we are going to parse each individual commit log and extract the information we need. This is probably much easier than trying to parse the underlying git file system.
 		# --numstat because the output is more machine friendly and easier to parse with regular expressions. It also doesn't munge the paths so it is much easier to identify when a file was renamed which is critical for when we are searching for paths that have been banned.
 		# --no-merges because we want to ignore all merge commits.
