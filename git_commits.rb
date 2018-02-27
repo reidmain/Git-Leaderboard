@@ -50,11 +50,21 @@ end
 
 def commits_for_git_repo(git_repo, normalized_names = {}, banned_names = [], banned_paths = [], verbose = false)
 	commits = []
+
+	# We assume the banned paths are all regular expressions so we union them together to make checking for any matches easier.
 	banned_paths_regexp = Regexp.union(banned_paths.map { |string| Regexp.new(string) })
 
+	# Change to the directory that contains the git repository.
+	# Changing directly to the directory is easier than calling commands on specific paths. It is easier to assume inside a certain scope you will always be working in the correct directory.
 	Dir.chdir(git_repo) do
+		# We are using git log because we are going to parse each individual commit log and extract the information we need. This is probably much easier than trying to parse the underlying git file system.
+		# --numstat because the output is more machine friendly and easier to parse with regular expressions. It also doesn't munge the paths so it is much easier to identify when a file was renamed which is critical for when we are searching for paths that have been banned.
+		# --no-merges because we want to ignore all merge commits.
+		# --pretty=format:'Author: %an%nEmail: %aE%nHash: %H' outputs the author name, email and commit hash in a way that is easily parsable by a regular expression.
+		# -z separates the commits with NULs instead of with new newlines. Again, this just makes things easier to parse with regular expressions. Rather that trying to figure out what newlines mean new commits versus new file modifications we can just look for NULs instead.
 		git_log_output = `git log --numstat --no-merges --pretty=format:'Author: %an%nEmail: %aE%nHash: %H' -z`
 
+		# This regular expression extracts the author name, email, commit hash and a string that repesents all of the file modifications for that commit.
 		git_log_output.scan(/Author: (.*)\nEmail: (.*)\nHash: (.*)[\n]?(.*)\x0/).each do |commit_match|
 			author_name = commit_match[0]
 			author_email = commit_match[1]
@@ -64,6 +74,7 @@ def commits_for_git_repo(git_repo, normalized_names = {}, banned_names = [], ban
 				puts "==============================\nAuthor: #{author_name}\nHash: #{commit_hash}\nEmail: #{author_email}"
 			end
 
+			# Normalize the author name if it exists in the mapping that was provided.
 			if normalized_author_name = normalized_names[author_name]
 				if verbose
 					puts "NORMALIZED '#{author_name}' to '#{normalized_author_name}'"
@@ -72,6 +83,7 @@ def commits_for_git_repo(git_repo, normalized_names = {}, banned_names = [], ban
 				author_name = normalized_author_name
 			end
 
+			# Compare the author's name to the list of banned authors and skip the commit if a match is found.
 			if banned_names.include? author_name
 				if verbose
 					puts "BANNED #{author_name}"
@@ -80,6 +92,9 @@ def commits_for_git_repo(git_repo, normalized_names = {}, banned_names = [], ban
 				next
 			end
 
+			# The file modifications string that is extracted is a strange beast.
+			# Each file modification is seperated by a NUL so that is something we can easily split on to get an array of all the file modifications. It should give us an array of strings that follow the format: num_additions\tnum_deletions\tpath
+			# The one problem with this is that, for a reason I cannot fathom, if a file has been renamed its old and new paths are also seperated by a NUL. This leads us to a scenario where we may have an entry in the array that is just two numbers representing the number of additions and deletions and then the next two elements in the array represent the new path and the original path of the file that is being moved.
 			file_modifications = []
 			file_modifications_string = commit_match[3].split("\x0")
 			i = 0
@@ -132,6 +147,7 @@ class ScriptOptions
 		@normalized_names = {}
 		@banned_names = []
 		@banned_paths = []
+		@verbose = false
 
 		option_parser = OptionParser.new
 
