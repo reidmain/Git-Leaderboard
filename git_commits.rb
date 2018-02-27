@@ -29,19 +29,18 @@ class Commit
 	attr_reader :additions
 	attr_reader :deletions
 
-	def initialize(author_name, author_email, hash)
+	def initialize(author_name, author_email, hash, file_modifications)
 		@author_name = author_name
 		@author_email = author_email
 		@hash = hash
-		@file_modifications = []
+		@file_modifications = file_modifications
 		@additions = 0
 		@deletions = 0
-	end
 
-	def add_file_modification(file_modification)
-		file_modifications.push(file_modification)
-		@additions += file_modification.additions
-		@deletions += file_modification.deletions
+		file_modifications.each do |file_modification|
+			@additions += file_modification.additions
+			@deletions += file_modification.deletions
+		end
 	end
 
 	def to_s
@@ -73,8 +72,7 @@ def commits_for_git_repo(git_repo, normalized_names = {}, banned_paths = [], ver
 				author_name = normalized_author_name
 			end
 
-			commit = Commit.new(author_name, author_email, commit_hash)
-
+			file_modifications = []
 			file_modifications_string = commit_match[3].split("\x0")
 			i = 0
 			while i < file_modifications_string.length
@@ -93,7 +91,7 @@ def commits_for_git_repo(git_repo, normalized_names = {}, banned_paths = [], ver
 
 					if path.match(banned_paths_regexp).nil? == true
 						file_modification = Commit::FileModification.new(path, original_path, additions, deletions)
-						commit.add_file_modification(file_modification)
+						file_modifications.push(file_modification)
 
 						if verbose
 							puts file_modification
@@ -106,6 +104,7 @@ def commits_for_git_repo(git_repo, normalized_names = {}, banned_paths = [], ver
 				i += 1
 			end
 
+			commit = Commit.new(author_name, author_email, commit_hash, file_modifications)
 			commits.push(commit)
 		end
 	end
