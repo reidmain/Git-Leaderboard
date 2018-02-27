@@ -48,7 +48,7 @@ class Commit
 	end
 end
 
-def commits_for_git_repo(git_repo, normalized_names = {}, banned_paths = [], verbose = false)
+def commits_for_git_repo(git_repo, normalized_names = {}, banned_names = [], banned_paths = [], verbose = false)
 	commits = []
 	banned_paths_regexp = Regexp.union(banned_paths.map { |string| Regexp.new(string) })
 
@@ -70,6 +70,14 @@ def commits_for_git_repo(git_repo, normalized_names = {}, banned_paths = [], ver
 				end
 
 				author_name = normalized_author_name
+			end
+
+			if banned_names.include? author_name
+				if verbose
+					puts "BANNED #{author_name}"
+				end
+
+				next
 			end
 
 			file_modifications = []
@@ -122,6 +130,7 @@ class ScriptOptions
 	def initialize(args)
 		@git_repository_path = Dir.pwd
 		@normalized_names = {}
+		@banned_names = []
 		@banned_paths = []
 
 		option_parser = OptionParser.new
@@ -191,6 +200,7 @@ if __FILE__ == $PROGRAM_NAME
 
 	commits = commits_for_git_repo(script_options.git_repository_path,
 		script_options.normalized_names,
+		script_options.banned_names,
 		script_options.banned_paths,
 		script_options.verbose)
 end
