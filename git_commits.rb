@@ -65,10 +65,11 @@ def commits_for_git_repo(git_repository_path, normalized_names = {}, banned_name
 		git_log_output = `git log --numstat --no-merges --pretty=format:'Author: %an%nEmail: %aE%nHash: %H' -z`
 
 		# This regular expression extracts the author name, email, commit hash and a string that repesents all of the file modifications for that commit.
-		git_log_output.scan(/Author: (.*)\nEmail: (.*)\nHash: (.*)[\n]?(.*)\x0/).each do |commit_match|
-			author_name = commit_match[0]
-			author_email = commit_match[1]
-			commit_hash = commit_match[2]
+		git_log_output.scan(/Author: (.*)\nEmail: (.*)\nHash: (.*)[\n]?(.*)\x0/).each do |git_commit_info|
+			author_name = git_commit_info[0]
+			author_email = git_commit_info[1]
+			commit_hash = git_commit_info[2]
+			file_modifications_string = git_commit_info[3]
 
 			if verbose
 				puts "==============================\nAuthor: #{author_name}\nHash: #{commit_hash}\nEmail: #{author_email}"
@@ -95,17 +96,19 @@ def commits_for_git_repo(git_repository_path, normalized_names = {}, banned_name
 			# The file modifications string that is extracted is a strange beast.
 			# Each file modification is seperated by a NUL so that is something we can easily split on to get an array of all the file modifications. It should give us an array of strings that follow the format: num_additions\tnum_deletions\tpath
 			# The one problem with this is that, for a reason I cannot fathom, if a file has been renamed its old and new paths are also seperated by a NUL. This leads us to a scenario where we may have an entry in the array that is just two numbers representing the number of additions and deletions and then the next two elements in the array represent the new path and the original path of the file that is being moved.
+			# This is why we use a while loop to iterate over all of the file modifications. If we encounter this strange scenario we can easily consume the next two elements in the array and increment our iterator counter accordingly.
 			file_modifications = []
-			file_modifications_string = commit_match[3].split("\x0")
+			file_modifications_array = file_modifications_string.split("\x0")
 			i = 0
-			while i < file_modifications_string.length
-				file_modification_string = file_modifications_string[i]
+			while i < file_modifications_array.length
+				file_modification_string = file_modifications_array[i]
 
 				if file_match_data = file_modification_string.match(/^(\d+)\t+(\d+)\t(.*)/)
 					additions = file_match_data[1].to_i
 					deletions = file_match_data[2].to_i
 					path = file_match_data[3]
 					original_path = nil
+
 					if path.empty?
 						i += 2
 						path = file_modifications_string[i]
