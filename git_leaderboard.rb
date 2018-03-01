@@ -40,8 +40,7 @@ if __FILE__ == $PROGRAM_NAME
 	commits = commits_for_git_repo(script_options.git_repository_path,
 		script_options.normalized_names,
 		script_options.banned_names,
-		script_options.banned_paths,
-		script_options.verbose)
+		script_options.banned_paths)
 
 	author_summaries = {}
 
@@ -84,11 +83,13 @@ if __FILE__ == $PROGRAM_NAME
 		num_deletions_percentage = (num_deletions / total_deletions.to_f * 100).round(2)
 		num_files_changed_percentage = (num_files_changed / total_files_changed.to_f * 100).round(2)
 
-		puts author
-		puts "\tCommits: #{num_commits} (#{num_commits_percentage}%)"
-		puts "\tAdditions: #{num_additions} (#{num_additions_percentage}%)"
-		puts "\tDeletions: #{num_deletions} (#{num_deletions_percentage}%)"
-		puts "\tFiles Changed: #{num_files_changed} (#{num_files_changed_percentage}%)"
+		if script_options.verbose
+			puts author
+			puts "\tCommits: #{num_commits} (#{num_commits_percentage}%)"
+			puts "\tAdditions: #{num_additions} (#{num_additions_percentage}%)"
+			puts "\tDeletions: #{num_deletions} (#{num_deletions_percentage}%)"
+			puts "\tFiles Changed: #{num_files_changed} (#{num_files_changed_percentage}%)"
+		end
 
 		if (csv_file)
 			csv_file.write("\n#{author},#{num_commits},#{num_commits_percentage},#{num_additions},#{num_additions_percentage},#{num_deletions},#{num_deletions_percentage},#{num_files_changed},#{num_files_changed_percentage}")
