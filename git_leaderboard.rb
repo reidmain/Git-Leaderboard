@@ -32,10 +32,24 @@ class AuthorSummary
 end
 
 class LeaderboardScriptOptions < CommitsScriptOptions
+	attr_reader :output_path
+
+	def initialize(args, option_parser)
+		option_parser.on(
+			"--output-path PATH",
+			String,
+			"Path to the output of the script.",
+			"The output will be in the comma-seperated values format."
+			) do |output_path|
+				@output_path = output_path
+		end
+
+		super(args, option_parser)
+	end
 end
 
 if __FILE__ == $PROGRAM_NAME
-	script_options = LeaderboardScriptOptions.new(ARGV)
+	script_options = LeaderboardScriptOptions.new(ARGV, OptionParser.new)
 
 	commits = commits_for_git_repo(script_options.git_repository_path,
 		script_options.normalized_names,
@@ -65,9 +79,8 @@ if __FILE__ == $PROGRAM_NAME
 	total_files_changed = sorted_author_summaries_by_num_commits.sum { |x| x.files_modified }
 
 	csv_file = nil
-	filename = "output"
-	if (filename)
-		csv_file = File.open("#{filename}.csv", "w")
+	if script_options.output_path
+		csv_file = File.open(script_options.output_path, "w")
 		csv_file.write("Author,Commits,% of Commits,Additions,% of Additions,Deletions,% of Deletions,Files Changed,% of Files Changed")
 	end
 

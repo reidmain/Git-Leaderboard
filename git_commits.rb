@@ -145,14 +145,12 @@ class CommitsScriptOptions
 	attr_reader :banned_paths
 	attr_reader :verbose
 
-	def initialize(args)
+	def initialize(args, option_parser)
 		@git_repository_path = Dir.pwd
 		@normalized_names = {}
 		@banned_names = []
 		@banned_paths = []
 		@verbose = false
-
-		option_parser = OptionParser.new
 
 		option_parser.accept(JSON) do |option_json|
 			if File.file?(option_json)
