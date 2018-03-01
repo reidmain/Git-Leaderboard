@@ -138,7 +138,7 @@ def commits_for_git_repo(git_repository_path, normalized_names = {}, banned_name
 	return commits
 end
 
-class ScriptOptions
+class CommitsScriptOptions
 	attr_reader :git_repository_path
 	attr_reader :normalized_names
 	attr_reader :banned_names
@@ -215,7 +215,7 @@ class ScriptOptions
 end
 
 if __FILE__ == $PROGRAM_NAME
-	script_options = ScriptOptions.new(ARGV)
+	script_options = CommitsScriptOptions.new(ARGV)
 
 	commits = commits_for_git_repo(script_options.git_repository_path,
 		script_options.normalized_names,

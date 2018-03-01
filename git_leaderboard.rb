@@ -31,47 +31,17 @@ class AuthorSummary
 	end
 end
 
+class LeaderboardScriptOptions < CommitsScriptOptions
+end
+
 if __FILE__ == $PROGRAM_NAME
-	git_repo_path ||= Dir.pwd
-	normalized_names = {}
-	banned_filenames = []
+	script_options = LeaderboardScriptOptions.new(ARGV)
 
-	OptionParser.new do |parser|
-		parser.accept(JSON) do |possible_json|
-			if File.file?(possible_json)
-				json_data = File.read(possible_json)
-				json = JSON.parse(json_data)
-			else
-				json = JSON.parse(possible_json)
-			end
-		end
-
-		parser.on(
-			"--git-repo=PATH",
-			"The path to the git repository. Defaults to the directory the script is run from.",
-			String
-			) do |option_git_repo_path|
-				git_repo_path = option_git_repo_path
-			end
-
-		parser.on(
-			"--normalized-names JSON",
-			"Either the path to a JSON file or a JSON string that contains a hash of normalized usernames.",
-			JSON
-			) do |json|
-				normalized_names = json
-			end
-
-		parser.on(
-			"--banned-filenames JSON",
-			"Either the path to a JSON file or a JSON string that contains an array of banned filenames. Regex is acceptable..",
-			JSON
-			) do |json|
-				banned_filenames = json
-			end
-	end.parse!
-
-	commits = commits_for_git_repo(git_repo_path, normalized_names, banned_filenames)
+	commits = commits_for_git_repo(script_options.git_repository_path,
+		script_options.normalized_names,
+		script_options.banned_names,
+		script_options.banned_paths,
+		script_options.verbose)
 
 	author_summaries = {}
 
