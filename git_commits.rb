@@ -213,7 +213,7 @@ class CommitsScriptOptions
 end
 
 if __FILE__ == $PROGRAM_NAME
-	script_options = CommitsScriptOptions.new(ARGV)
+	script_options = CommitsScriptOptions.new(ARGV, OptionParser.new)
 
 	commits = commits_for_git_repo(script_options.git_repository_path,
 		script_options.normalized_names,
