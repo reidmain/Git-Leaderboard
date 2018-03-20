@@ -39,7 +39,7 @@ class LeaderboardScriptOptions < CommitsScriptOptions
 			"--output-path PATH",
 			String,
 			"Path to the output of the script.",
-			"The output will be in the comma-seperated values format."
+			"The output will be in the comma-separated values format."
 			) do |output_path|
 				@output_path = output_path
 		end
