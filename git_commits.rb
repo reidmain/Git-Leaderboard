@@ -150,7 +150,7 @@ class CommitsScriptOptions
 		@normalized_names = {}
 		@banned_names = []
 		@banned_paths = []
-		@verbose = false
+		@verbose = true
 
 		option_parser.accept(JSON) do |option_json|
 			if File.file?(option_json)
@@ -173,7 +173,7 @@ class CommitsScriptOptions
 		option_parser.on(
 			"--normalized-names JSON",
 			"A JSON object where the keys are the committers' names and the values are what the names should be normalized to.",
-			"For when a single author has commited under multiple names or for that one crazy committer whose name makes absolutely no sense.",
+			"For when a single author has committed under multiple names or for that one crazy committer whose name makes absolutely no sense.",
 			"Can be either a JSON string or a path to a JSON file.",
 			JSON
 			) do |option_json|
@@ -200,9 +200,9 @@ class CommitsScriptOptions
 		end
 
 		option_parser.on(
-			"--verbose",
+			"--verbose BOOL",
 			"A switch to determine if actions taken should be outputted to the console.",
-			"Defaults to off.",
+			"Defaults to true.",
 			TrueClass
 			) do |flag|
 				@verbose = flag
