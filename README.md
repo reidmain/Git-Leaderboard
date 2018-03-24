@@ -43,18 +43,18 @@ git_commits.rb also has the ability to be run as a script which will leverage th
 You can see what parameters can be supplied using `./git_commits.rb --help`
 
 ```
---git-repository PATH		Path to the git repository to analyze.
-							Defaults to the current directory if no path is provided.
---normalized-names JSON		A JSON object where the keys are the committers' names and the values are what the names should be normalized to.
-							For when a single author has committed under multiple names or for that one crazy committer whose name makes absolutely no sense.
-							Can be either a JSON string or a path to a JSON file.
---banned-names JSON			A JSON array of author names whose commits should be ignored.
-							Primarily designed for authors whose commits are automated.
-							Can be either a JSON string or a path to a JSON file.
---banned-paths JSON			A JSON array of regular expressions used to omit file modifications to specific paths.
-							Can be either a JSON string or a path to a JSON file.
---verbose BOOL				A switch to determine if actions taken should be outputted to the console.
-							Defaults to true.
+--git-repository PATH       Path to the git repository to analyze.
+                            Defaults to the current directory if no path is provided.
+--normalized-names JSON     A JSON object where the keys are the committers' names and the values are what the names should be normalized to.
+                            For when a single author has committed under multiple names or for that one crazy committer whose name makes absolutely no sense.
+                            Can be either a JSON string or a path to a JSON file.
+--banned-names JSON         A JSON array of author names whose commits should be ignored.
+                            Primarily designed for authors whose commits are automated.
+                            Can be either a JSON string or a path to a JSON file.
+--banned-paths JSON         A JSON array of regular expressions used to omit file modifications to specific paths.
+                            Can be either a JSON string or a path to a JSON file.
+--verbose BOOL              A switch to determine if actions taken should be outputted to the console.
+                            Defaults to true.
 ```
 
 A `CommitsScriptOptions` object is defined to make it easy to parse the input of the script as well as allow other scripts to inherit these same options. You can see an example of this inheritance in the git_leaderboard.rb file.
@@ -65,18 +65,18 @@ This file is a script that leverages git_commits.rb to group all of the commits 
 You can see what parameters can be supplied using `./git_leaderboard.rb --help`
 
 ```
---output-path PATH			Path to the output of the script.
-							The output will be in the comma-separated values format.
---git-repository PATH		Path to the git repository to analyze.
-							Defaults to the current directory if no path is provided.
---normalized-names JSON		A JSON object where the keys are the committers' names and the values are what the names should be normalized to.
-							For when a single author has committed under multiple names or for that one crazy committer whose name makes absolutely no sense.
-							Can be either a JSON string or a path to a JSON file.
---banned-names JSON			A JSON array of author names whose commits should be ignored.
-							Primarily designed for authors whose commits are automated.
-							Can be either a JSON string or a path to a JSON file.
---banned-paths JSON			A JSON array of regular expressions used to omit file modifications to specific paths.
-							Can be either a JSON string or a path to a JSON file.
---verbose BOOL				A switch to determine if actions taken should be outputted to the console.
-							Defaults to true.
+--output-path PATH          Path to the output of the script.
+                            The output will be in the comma-separated values format.
+--git-repository PATH       Path to the git repository to analyze.
+                            Defaults to the current directory if no path is provided.
+--normalized-names JSON     A JSON object where the keys are the committers' names and the values are what the names should be normalized to.
+                            For when a single author has committed under multiple names or for that one crazy committer whose name makes absolutely no sense.
+                            Can be either a JSON string or a path to a JSON file.
+--banned-names JSON         A JSON array of author names whose commits should be ignored.
+                            Primarily designed for authors whose commits are automated.
+                            Can be either a JSON string or a path to a JSON file.
+--banned-paths JSON         A JSON array of regular expressions used to omit file modifications to specific paths.
+                            Can be either a JSON string or a path to a JSON file.
+--verbose BOOL              A switch to determine if actions taken should be outputted to the console.
+                            Defaults to true.
 ```
