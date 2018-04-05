@@ -6,28 +6,28 @@ require_relative "./git_commits.rb"
 
 class AuthorSummary
 	attr_reader :author_name
-	attr_reader :commits
-	attr_reader :additions
-	attr_reader :deletions
-	attr_reader :files_modified
+	attr_reader :number_of_commits
+	attr_reader :number_of_additions
+	attr_reader :number_of_deletions
+	attr_reader :number_of_files_modified
 
 	def initialize(author_name)
 		@author_name = author_name
-		@commits = 0
-		@additions = 0
-		@deletions = 0
-		@files_modified = 0
+		@number_of_commits = 0
+		@number_of_additions = 0
+		@number_of_deletions = 0
+		@number_of_files_modified = 0
 	end
 
 	def append(commit)
-		@commits += 1
-		@additions += commit.additions
-		@deletions += commit.deletions
-		@files_modified += commit.file_modifications.count
+		@number_of_commits += 1
+		@number_of_additions += commit.additions
+		@number_of_deletions += commit.deletions
+		@number_of_files_modified += commit.file_modifications.count
 	end
 
 	def to_s
-		return "Author: #{@author_name}\nCommits: #{@commits}\nAdditions: #{@additions}\nDeletions: #{@deletions}\nFiles Modified: #{@files_modified}"
+		return "Author: #{@author_name}\nCommits: #{@number_of_commits}\nAdditions: #{@number_of_additions}\nDeletions: #{@number_of_deletions}\nFiles Modified: #{@number_of_files_modified}"
 	end
 end
 
@@ -66,40 +66,41 @@ def process(
 	output_path: nil,
 	verbose: false
 )
-	sorted_author_summaries_by_num_commits = author_summaries.values.sort { |x, y| y.commits <=> x.commits }
-	total_commits = sorted_author_summaries_by_num_commits.sum { |x| x.commits }
-	total_additions = sorted_author_summaries_by_num_commits.sum { |x| x.additions }
-	total_deletions = sorted_author_summaries_by_num_commits.sum { |x| x.deletions }
-	total_files_changed = sorted_author_summaries_by_num_commits.sum { |x| x.files_modified }
+	sorted_author_summaries_by_number_of_commits = author_summaries.values.sort { |x, y| y.number_of_commits <=> x.number_of_commits }
+	total_commits = sorted_author_summaries_by_number_of_commits.sum { |x| x.number_of_commits }
+	total_additions = sorted_author_summaries_by_number_of_commits.sum { |x| x.number_of_additions }
+	total_deletions = sorted_author_summaries_by_number_of_commits.sum { |x| x.number_of_deletions }
+	total_files_modified = sorted_author_summaries_by_number_of_commits.sum { |x| x.number_of_files_modified }
 
 	csv_file = nil
 	if output_path
 		csv_file = File.open(output_path, "w")
-		csv_file.write("Author,Commits,% of Commits,Additions,% of Additions,Deletions,% of Deletions,Files Changed,% of Files Changed")
+		csv_file.write("Author,Commits,% of Commits,Additions,% of Additions,Deletions,% of Deletions,Files Modified,% of Files Modified")
+		csv_file.write("\n,#{total_commits},100,#{total_additions},100,#{total_deletions},100,#{total_files_modified},100")
 	end
 
-	sorted_author_summaries_by_num_commits.each do |author_summary|
+	sorted_author_summaries_by_number_of_commits.each do |author_summary|
 		author = author_summary.author_name
-		num_commits = author_summary.commits
-		num_additions = author_summary.additions
-		num_deletions = author_summary.deletions
-		num_files_changed = author_summary.files_modified
+		number_of_commits = author_summary.number_of_commits
+		number_of_additions = author_summary.number_of_additions
+		number_of_deletions = author_summary.number_of_deletions
+		number_of_files_modified = author_summary.number_of_files_modified
 
-		num_commits_percentage = (num_commits / total_commits.to_f * 100).round(2)
-		num_additions_percentage = (num_additions / total_additions.to_f * 100).round(2)
-		num_deletions_percentage = (num_deletions / total_deletions.to_f * 100).round(2)
-		num_files_changed_percentage = (num_files_changed / total_files_changed.to_f * 100).round(2)
+		commits_percentage = (number_of_commits / total_commits.to_f * 100).round(2)
+		additions_percentage = (number_of_additions / total_additions.to_f * 100).round(2)
+		deletions_percentage = (number_of_deletions / total_deletions.to_f * 100).round(2)
+		files_modified_percentage = (number_of_files_modified / total_files_modified.to_f * 100).round(2)
 
 		if verbose
 			puts author
-			puts "\tCommits: #{num_commits} (#{num_commits_percentage}%)"
-			puts "\tAdditions: #{num_additions} (#{num_additions_percentage}%)"
-			puts "\tDeletions: #{num_deletions} (#{num_deletions_percentage}%)"
-			puts "\tFiles Changed: #{num_files_changed} (#{num_files_changed_percentage}%)"
+			puts "\tCommits: #{number_of_commits} (#{commits_percentage}%)"
+			puts "\tAdditions: #{number_of_additions} (#{additions_percentage}%)"
+			puts "\tDeletions: #{number_of_deletions} (#{deletions_percentage}%)"
+			puts "\tFiles Modified: #{number_of_files_modified} (#{files_modified_percentage}%)"
 		end
 
 		if (csv_file)
-			csv_file.write("\n#{author},#{num_commits},#{num_commits_percentage},#{num_additions},#{num_additions_percentage},#{num_deletions},#{num_deletions_percentage},#{num_files_changed},#{num_files_changed_percentage}")
+			csv_file.write("\n#{author},#{number_of_commits},#{commits_percentage},#{number_of_additions},#{additions_percentage},#{number_of_deletions},#{deletions_percentage},#{number_of_files_modified},#{files_modified_percentage}")
 		end
 	end
 
