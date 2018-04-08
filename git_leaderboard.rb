@@ -35,12 +35,14 @@ def author_summaries_for(
 	git_repository_path:,
 	normalized_names:,
 	banned_names:,
-	banned_paths:
+	banned_paths:,
+	verbose:
 )
 	commits = commits_for_git_repo(git_repository_path,
 		normalized_names,
 		banned_names,
-		banned_paths)
+		banned_paths,
+		verbose)
 
 	author_summaries = {}
 
@@ -133,7 +135,8 @@ if __FILE__ == $PROGRAM_NAME
 		git_repository_path: script_options.git_repository_path,
 		normalized_names: script_options.normalized_names,
 		banned_names: script_options.banned_names,
-		banned_paths: script_options.banned_paths
+		banned_paths: script_options.banned_paths,
+		verbose: script_options.verbose
 	)
 
 	process(

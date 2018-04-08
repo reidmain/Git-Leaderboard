@@ -116,13 +116,14 @@ if __FILE__ == $PROGRAM_NAME
 			git_repository_path: entry.git_repository_path,
 			normalized_names: entry.normalized_names,
 			banned_names: entry.banned_names,
-			banned_paths: entry.banned_paths
+			banned_paths: entry.banned_paths,
+			verbose: script_options.verbose
 		)
 
 		process(
 			author_summaries: author_summaries,
 			output_path: entry.output_path,
-			verbose: false
+			verbose: script_options.verbose
 		)
 	end
 end
