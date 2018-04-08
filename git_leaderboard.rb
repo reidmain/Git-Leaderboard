@@ -74,7 +74,7 @@ def process(
 
 	csv_file = nil
 	if output_path
-		csv_file = File.open(output_path, "w")
+		csv_file = File.open(File.expand_path("#{output_path}.csv"), "w")
 		csv_file.write("Author,Commits,% of Commits,Additions,% of Additions,Deletions,% of Deletions,Files Modified,% of Files Modified")
 		csv_file.write("\n,#{total_commits},100,#{total_additions},100,#{total_deletions},100,#{total_files_modified},100")
 	end
@@ -116,8 +116,8 @@ class LeaderboardScriptOptions < CommitsScriptOptions
 		option_parser.on(
 			"--output-path PATH",
 			String,
-			"Path to the output of the script.",
-			"The output will be in the comma-separated values format."
+			"The path that the script should save its output to.",
+			"The output will be a comma-separated values text file and as such will automatically have \".csv\" appended to it."
 			) do |output_path|
 				@output_path = output_path
 		end
