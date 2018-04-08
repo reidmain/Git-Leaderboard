@@ -56,7 +56,7 @@ def commits_for_git_repo(git_repository_path, normalized_names = {}, banned_name
 
 	# Change to the directory that contains the git repository.
 	# Changing directly to the directory is easier than calling commands on specific paths. It is easier to assume inside a certain scope you will always be working in the correct directory.
-	Dir.chdir(git_repository_path) do
+	Dir.chdir(File.expand_path(git_repository_path)) do
 		# We are using git log because we are going to parse each individual commit log and extract the information we need. This is probably much easier than trying to parse the underlying git file system.
 		# --numstat because the output is more machine friendly and easier to parse with regular expressions. It also doesn't munge the paths so it is much easier to identify when a file was renamed which is critical for when we are searching for paths that have been banned.
 		# --no-merges because we want to ignore all merge commits.
