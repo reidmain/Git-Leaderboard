@@ -107,6 +107,8 @@ if __FILE__ == $PROGRAM_NAME
 
 	script_options = BanzukeScriptOptions.new(ARGV, OptionParser.new)
 
+	banzuke_author_summaries = {}
+
 	for entry in script_options.entries do
 		if script_options.verbose
 			puts "Computing the leaderboard for #{entry.git_repository_path}"
@@ -125,5 +127,27 @@ if __FILE__ == $PROGRAM_NAME
 			output_path: entry.output_path,
 			verbose: script_options.verbose
 		)
+
+		for (author_name, author_summary) in author_summaries
+			if banzuke_author_summary = banzuke_author_summaries[author_name]
+				new_author_summary = AuthorSummary.new(
+					author_name: author_name,
+					number_of_commits: banzuke_author_summary.number_of_commits + author_summary.number_of_commits,
+					number_of_additions: banzuke_author_summary.number_of_additions + author_summary.number_of_additions,
+					number_of_deletions: banzuke_author_summary.number_of_deletions + author_summary.number_of_deletions,
+					number_of_files_modified: banzuke_author_summary.number_of_files_modified + author_summary.number_of_files_modified,
+					)
+
+				banzuke_author_summaries[author_name] = new_author_summary
+			else
+				banzuke_author_summaries[author_name] = author_summary
+			end
+		end
 	end
+
+	process(
+			author_summaries: banzuke_author_summaries,
+			output_path: "./_Banzuke",
+			verbose: script_options.verbose
+		)
 end

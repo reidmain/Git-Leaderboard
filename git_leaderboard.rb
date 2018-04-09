@@ -11,12 +11,12 @@ class AuthorSummary
 	attr_reader :number_of_deletions
 	attr_reader :number_of_files_modified
 
-	def initialize(author_name)
+	def initialize(author_name:, number_of_commits: 0, number_of_additions: 0, number_of_deletions:0, number_of_files_modified: 0)
 		@author_name = author_name
-		@number_of_commits = 0
-		@number_of_additions = 0
-		@number_of_deletions = 0
-		@number_of_files_modified = 0
+		@number_of_commits = number_of_commits
+		@number_of_additions = number_of_additions
+		@number_of_deletions = number_of_deletions
+		@number_of_files_modified = number_of_files_modified
 	end
 
 	def append(commit)
@@ -51,7 +51,7 @@ def author_summaries_for(
 
 		author_summary = author_summaries[author_name]
 		if author_summary == nil
-			author_summary = AuthorSummary.new(author_name)
+			author_summary = AuthorSummary.new(author_name: author_name)
 			author_summaries[author_name] = author_summary
 		end
 
