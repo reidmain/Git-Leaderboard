@@ -33,10 +33,10 @@ end
 
 def author_summaries_for(
 	git_repository_path:,
-	normalized_names:,
-	banned_names:,
-	banned_paths:,
-	verbose:
+	normalized_names: {},
+	banned_names: [],
+	banned_paths: [],
+	verbose: false
 )
 	commits = commits_for_git_repo(git_repository_path,
 		normalized_names,
@@ -113,8 +113,11 @@ end
 
 class LeaderboardScriptOptions < CommitsScriptOptions
 	attr_reader :output_path
+	attr_reader :output_raw
 
 	def initialize(args, option_parser)
+		@output_raw = true
+
 		option_parser.on(
 			"--output-path PATH",
 			String,
@@ -122,6 +125,15 @@ class LeaderboardScriptOptions < CommitsScriptOptions
 			"The output will be a comma-separated values text file and as such will automatically have \".csv\" appended to it."
 			) do |output_path|
 				@output_path = output_path
+		end
+
+		option_parser.on(
+			"--output-raw BOOL",
+			"A switch to determine if the unfiltered leaderboard should also be outputted.",
+			"Defaults to true.",
+			TrueClass
+			) do |flag|
+				@verbose = flag
 		end
 
 		super(args, option_parser)
@@ -144,4 +156,17 @@ if __FILE__ == $PROGRAM_NAME
 		output_path: script_options.output_path,
 		verbose: script_options.verbose
 	)
+
+	if script_options.output_raw and script_options.output_path.nil? == false
+		author_summaries = author_summaries_for(
+			git_repository_path: script_options.git_repository_path,
+			verbose: false
+		)
+
+		process(
+			author_summaries: author_summaries,
+			output_path: "#{script_options.output_path}_raw",
+			verbose: false
+		)
+	end
 end
