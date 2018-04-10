@@ -140,33 +140,53 @@ class LeaderboardScriptOptions < CommitsScriptOptions
 	end
 end
 
-if __FILE__ == $PROGRAM_NAME
-	script_options = LeaderboardScriptOptions.new(ARGV, OptionParser.new)
-
+def leaderboard_for(
+	git_repository_path:,
+	normalized_names:,
+	banned_names:,
+	banned_paths:,
+	output_path:,
+	output_raw:,
+	verbose:
+)
 	author_summaries = author_summaries_for(
-		git_repository_path: script_options.git_repository_path,
-		normalized_names: script_options.normalized_names,
-		banned_names: script_options.banned_names,
-		banned_paths: script_options.banned_paths,
-		verbose: script_options.verbose
+		git_repository_path: git_repository_path,
+		normalized_names: normalized_names,
+		banned_names: banned_names,
+		banned_paths: banned_paths,
+		verbose: verbose
 	)
 
 	process(
 		author_summaries: author_summaries,
-		output_path: script_options.output_path,
-		verbose: script_options.verbose
+		output_path: output_path,
+		verbose: verbose
 	)
 
-	if script_options.output_raw and script_options.output_path.nil? == false
-		author_summaries = author_summaries_for(
-			git_repository_path: script_options.git_repository_path,
+	if output_raw and output_path.nil? == false
+		raw_author_summaries = author_summaries_for(
+			git_repository_path: git_repository_path,
 			verbose: false
 		)
 
 		process(
-			author_summaries: author_summaries,
-			output_path: "#{script_options.output_path}_raw",
+			author_summaries: raw_author_summaries,
+			output_path: "#{output_path}_raw",
 			verbose: false
 		)
 	end
+end
+
+if __FILE__ == $PROGRAM_NAME
+	script_options = LeaderboardScriptOptions.new(ARGV, OptionParser.new)
+
+	leaderboard_for(
+		git_repository_path: script_options.git_repository_path,
+		normalized_names: script_options.normalized_names,
+		banned_names: script_options.banned_names,
+		banned_paths: script_options.banned_paths,
+		output_path: script_options.output_path,
+		output_raw: script_options.output_raw,
+		verbose: script_options.verbose
+	)
 end
