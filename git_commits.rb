@@ -3,22 +3,30 @@
 require "json"
 require "optparse"
 
+=begin rdoc
+A class that represents all of the information associated with a commit in a git repository.
+=end
 class Commit
 	class FileModification
 		attr_reader :path
 		attr_reader :original_path
-		attr_reader :additions
-		attr_reader :deletions
+		attr_reader :number_of_additions
+		attr_reader :number_of_deletions
 
-		def initialize(path, original_path, additions, deletions)
+		def initialize(
+			path:, 
+			original_path:, 
+			number_of_additions:, 
+			number_of_deletions:
+		)
 			@path = path
 			@original_path = original_path
-			@additions = additions
-			@deletions = deletions
+			@number_of_additions = number_of_additions
+			@number_of_deletions = number_of_deletions
 		end
 
 		def to_s
-			return "+#{@additions}\t-#{@deletions}\t#{@path}"
+			return "+#{@number_of_additions}\t-#{@number_of_deletions}\t#{@path}"
 		end
 	end
 
@@ -26,29 +34,45 @@ class Commit
 	attr_reader :author_email
 	attr_reader :hash
 	attr_reader :file_modifications
-	attr_reader :additions
-	attr_reader :deletions
+	attr_reader :number_of_additions
+	attr_reader :number_of_deletions
 
-	def initialize(author_name, author_email, hash, file_modifications)
+	def initialize(
+		author_name:, 
+		author_email:, 
+		hash:, 
+		file_modifications:
+	)
 		@author_name = author_name
 		@author_email = author_email
 		@hash = hash
 		@file_modifications = file_modifications
-		@additions = 0
-		@deletions = 0
+		@number_of_additions = 0
+		@number_of_deletions = 0
 
 		file_modifications.each do |file_modification|
-			@additions += file_modification.additions
-			@deletions += file_modification.deletions
+			@number_of_additions += file_modification.number_of_additions
+			@number_of_deletions += file_modification.number_of_deletions
 		end
 	end
 
 	def to_s
-		return "Author: #{@author_name}\nHash: #{@hash}\nAdditions: #{@additions}\nDeletions: #{@deletions}\n#{@file_modifications.join("\n")}"
+		return "Author: #{@author_name}\nEmail: #{author_email}\nHash: #{@hash}\nAdditions: #{@number_of_additions}\nDeletions: #{@number_of_deletions}\n#{@file_modifications.join("\n")}"
 	end
 end
 
-def commits_for_git_repo(git_repository_path, normalized_names = {}, banned_names = [], banned_paths = [], verbose = false)
+=begin rdoc
+Returns an array of Commit objects for the given git repository.
+
+These Commit objects may have been sanitized if any of the other parameters specifying certain filtering rules were passed in.
+=end
+def commits_for_git_repo(
+	git_repository_path:, 
+	normalized_names: {}, 
+	banned_names: [], 
+	banned_paths: [], 
+	verbose: false
+)
 	commits = []
 
 	# We assume the banned paths are all regular expressions so we union them together to make checking for any matches easier.
@@ -72,7 +96,7 @@ def commits_for_git_repo(git_repository_path, normalized_names = {}, banned_name
 			file_modifications_string = git_commit_info[3]
 
 			if verbose
-				puts "==============================\nAuthor: #{author_name}\nHash: #{commit_hash}\nEmail: #{author_email}"
+				puts "==============================\nAuthor: #{author_name}\nEmail: #{author_email}\nHash: #{commit_hash}"
 			end
 
 			# Normalize the author name if it exists in the mapping that was provided.
@@ -94,7 +118,7 @@ def commits_for_git_repo(git_repository_path, normalized_names = {}, banned_name
 			end
 
 			# The file modifications string that is extracted is a strange beast.
-			# Each file modification is seperated by a NUL so that is something we can easily split on to get an array of all the file modifications. It should give us an array of strings that follow the format: num_additions\tnum_deletions\tpath
+			# Each file modification is seperated by a NUL so that is something we can easily split on to get an array of all the file modifications. It should give us an array of strings that follow the format: (number_of_additions)\t(number_of_deletions)\t(path)
 			# The one problem with this is that, for a reason I cannot fathom, if a file has been renamed its old and new paths are also seperated by a NUL. This leads us to a scenario where we may have an entry in the array that is just two numbers representing the number of additions and deletions and then the next two elements in the array represent the new path and the original path of the file that is being moved.
 			# This is why we use a while loop to iterate over all of the file modifications. If we encounter this strange scenario we can easily consume the next two elements in the array and increment our iterator counter accordingly.
 			file_modifications = []
@@ -104,8 +128,8 @@ def commits_for_git_repo(git_repository_path, normalized_names = {}, banned_name
 				file_modification_string = file_modifications_array[i]
 
 				if file_match_data = file_modification_string.match(/^(\d+)\t+(\d+)\t(.*)/)
-					additions = file_match_data[1].to_i
-					deletions = file_match_data[2].to_i
+					number_of_additions = file_match_data[1].to_i
+					number_of_deletions = file_match_data[2].to_i
 					path = file_match_data[3]
 					original_path = nil
 
@@ -116,7 +140,12 @@ def commits_for_git_repo(git_repository_path, normalized_names = {}, banned_name
 					end
 
 					if path.match(banned_paths_regexp).nil? == true
-						file_modification = Commit::FileModification.new(path, original_path, additions, deletions)
+						file_modification = Commit::FileModification.new(
+							path: path, 
+							original_path: original_path, 
+							number_of_additions: number_of_additions, 
+							number_of_deletions: number_of_deletions
+						)
 						file_modifications.push(file_modification)
 
 						if verbose
@@ -130,7 +159,12 @@ def commits_for_git_repo(git_repository_path, normalized_names = {}, banned_name
 				i += 1
 			end
 
-			commit = Commit.new(author_name, author_email, commit_hash, file_modifications)
+			commit = Commit.new(
+				author_name: author_name, 
+				author_email: author_email, 
+				hash: commit_hash, 
+				file_modifications: file_modifications
+			)
 			commits.push(commit)
 		end
 	end
@@ -145,7 +179,10 @@ class CommitsScriptOptions
 	attr_reader :banned_paths
 	attr_reader :verbose
 
-	def initialize(args, option_parser)
+	def initialize(
+		args:, 
+		option_parser:
+	)
 		@git_repository_path = Dir.pwd
 		@normalized_names = {}
 		@banned_names = []
@@ -213,11 +250,16 @@ class CommitsScriptOptions
 end
 
 if __FILE__ == $PROGRAM_NAME
-	script_options = CommitsScriptOptions.new(ARGV, OptionParser.new)
+	script_options = CommitsScriptOptions.new(
+		args: ARGV, 
+		option_parser: OptionParser.new
+	)
 
-	commits_for_git_repo(script_options.git_repository_path,
-		script_options.normalized_names,
-		script_options.banned_names,
-		script_options.banned_paths,
-		script_options.verbose)
+	commits_for_git_repo(
+		git_repository_path: script_options.git_repository_path,
+		normalized_names: script_options.normalized_names,
+		banned_names: script_options.banned_names,
+		banned_paths: script_options.banned_paths,
+		verbose: script_options.verbose
+	)
 end
