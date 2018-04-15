@@ -135,8 +135,8 @@ def commits_for_git_repo(
 
 					if path.empty?
 						i += 2
-						path = file_modifications_string[i]
-						original_path = file_modifications_string[i - 1]
+						path = file_modifications_array[i]
+						original_path = file_modifications_array[i - 1]
 					end
 
 					if path.match(banned_paths_regexp).nil? == true
