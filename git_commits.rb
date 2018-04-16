@@ -70,7 +70,7 @@ def commits_for_git_repo(
 	git_repository_path:, 
 	normalized_email_addresses: {},
 	normalized_names: {}, 
-	banned_names: [], 
+	banned_email_addresses: [], 
 	banned_paths: [], 
 	verbose: false
 )
@@ -118,10 +118,10 @@ def commits_for_git_repo(
 				author_name = normalized_author_name
 			end
 
-			# Compare the author's name to the list of banned authors and skip the commit if a match is found.
-			if banned_names.include? author_name
+			# Compare the author's email to the list of banned authors and skip the commit if a match is found.
+			if banned_email_addresses.include? author_email
 				if verbose
-					puts "BANNED #{author_name}"
+					puts "BANNED #{author_email}"
 				end
 
 				next
@@ -186,7 +186,7 @@ class CommitsScriptOptions
 	attr_reader :git_repository_path
 	attr_reader :normalized_email_addresses
 	attr_reader :normalized_names
-	attr_reader :banned_names
+	attr_reader :banned_email_addresses
 	attr_reader :banned_paths
 	attr_reader :verbose
 
@@ -197,7 +197,7 @@ class CommitsScriptOptions
 		@git_repository_path = Dir.pwd
 		@normalized_email_addresses = {}
 		@normalized_names = {}
-		@banned_names = []
+		@banned_email_addresses = []
 		@banned_paths = []
 		@verbose = true
 
@@ -242,12 +242,12 @@ class CommitsScriptOptions
 
 		option_parser.on(
 			"--banned-names JSON",
-			"A JSON array of author names whose commits should be ignored.",
+			"A JSON array of author email addresses whose commits should be ignored.",
 			"Primarily designed for authors whose commits are automated.",
 			"Can be either a JSON string or a path to a JSON file.",
 			JSON
 			) do |option_json|
-				@banned_names = option_json
+				@banned_email_addresses = option_json
 		end
 
 		option_parser.on(
@@ -282,7 +282,7 @@ if __FILE__ == $PROGRAM_NAME
 		git_repository_path: script_options.git_repository_path,
 		normalized_email_addresses: script_options.normalized_email_addresses,
 		normalized_names: script_options.normalized_names,
-		banned_names: script_options.banned_names,
+		banned_email_addresses: script_options.banned_email_addresses,
 		banned_paths: script_options.banned_paths,
 		verbose: script_options.verbose
 	)
