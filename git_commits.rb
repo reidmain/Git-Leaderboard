@@ -68,6 +68,7 @@ These Commit objects may have been sanitized if any of the other parameters spec
 =end
 def commits_for_git_repo(
 	git_repository_path:, 
+	normalized_email_addresses: {},
 	normalized_names: {}, 
 	banned_names: [], 
 	banned_paths: [], 
@@ -97,6 +98,15 @@ def commits_for_git_repo(
 
 			if verbose
 				puts "==============================\nAuthor: #{author_name}\nEmail: #{author_email}\nHash: #{commit_hash}"
+			end
+
+			# Normalize the author's email address if it exists in the mapping that was provided.
+			if normalized_author_email = normalized_email_addresses[author_email]
+				if verbose
+					puts "NORMALIZED '#{author_email}' to '#{normalized_author_email}'"
+				end
+
+				author_email = normalized_author_email
 			end
 
 			# Normalize the author name if it exists in the mapping that was provided.
@@ -174,6 +184,7 @@ end
 
 class CommitsScriptOptions
 	attr_reader :git_repository_path
+	attr_reader :normalized_email_addresses
 	attr_reader :normalized_names
 	attr_reader :banned_names
 	attr_reader :banned_paths
@@ -184,6 +195,7 @@ class CommitsScriptOptions
 		option_parser:
 	)
 		@git_repository_path = Dir.pwd
+		@normalized_email_addresses = {}
 		@normalized_names = {}
 		@banned_names = []
 		@banned_paths = []
@@ -205,6 +217,16 @@ class CommitsScriptOptions
 			"Defaults to the current directory if no path is provided."
 			) do |option_path|
 				@git_repository_path = option_path
+		end
+
+		option_parser.on(
+			"--normalized-email-addresses JSON",
+			"A JSON object where the keys are a committer's email address and the values are what that email address should be normalized to.",
+			"For when a single author has committed under multiple email addresses.",
+			"Can be either a JSON string or a path to a JSON file.",
+			JSON
+		) do |option_json|
+			@normalized_email_addresses = option_json
 		end
 
 		option_parser.on(
@@ -257,6 +279,7 @@ if __FILE__ == $PROGRAM_NAME
 
 	commits_for_git_repo(
 		git_repository_path: script_options.git_repository_path,
+		normalized_email_addresses: script_options.normalized_email_addresses,
 		normalized_names: script_options.normalized_names,
 		banned_names: script_options.banned_names,
 		banned_paths: script_options.banned_paths,
