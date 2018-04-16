@@ -67,11 +67,11 @@ Returns an array of Commit objects for the given git repository.
 These Commit objects may have been sanitized if any of the other parameters specifying certain filtering rules were passed in.
 =end
 def commits_for_git_repo(
-	git_repository_path:, 
+	git_repository_path:,
 	normalized_email_addresses: {},
-	normalized_names: {}, 
-	banned_email_addresses: [], 
-	banned_paths: [], 
+	normalized_names: {},
+	banned_email_addresses: [],
+	banned_paths: [],
 	verbose: false
 )
 	commits = []
@@ -215,8 +215,8 @@ class CommitsScriptOptions
 			String,
 			"Path to the git repository to analyze.",
 			"Defaults to the current directory if no path is provided."
-			) do |option_path|
-				@git_repository_path = option_path
+		) do |option_path|
+			@git_repository_path = option_path
 		end
 
 		option_parser.on(
@@ -236,8 +236,8 @@ class CommitsScriptOptions
 			"This normalization is applied after the committer's email address has been normalized by the parameter passed into --normalized-email-addresses. Therefore you should really only need to provide a normalized name for the one email address that represents a committer.",
 			"Can be either a JSON string or a path to a JSON file.",
 			JSON
-			) do |option_json|
-				@normalized_names = option_json
+		) do |option_json|
+			@normalized_names = option_json
 		end
 
 		option_parser.on(
@@ -246,8 +246,8 @@ class CommitsScriptOptions
 			"Primarily designed for authors whose commits are automated.",
 			"Can be either a JSON string or a path to a JSON file.",
 			JSON
-			) do |option_json|
-				@banned_email_addresses = option_json
+		) do |option_json|
+			@banned_email_addresses = option_json
 		end
 
 		option_parser.on(
@@ -255,8 +255,8 @@ class CommitsScriptOptions
 			"A JSON array of regular expressions used to omit file modifications to specific paths.",
 			"Can be either a JSON string or a path to a JSON file.",
 			JSON
-			) do |option_json|
-				@banned_paths = option_json
+		) do |option_json|
+			@banned_paths = option_json
 		end
 
 		option_parser.on(
@@ -264,8 +264,8 @@ class CommitsScriptOptions
 			"A switch to determine if actions taken should be outputted to the console.",
 			"Defaults to true.",
 			TrueClass
-			) do |flag|
-				@verbose = flag
+		) do |flag|
+			@verbose = flag
 		end
 
 		option_parser.parse(args)
@@ -274,7 +274,7 @@ end
 
 if __FILE__ == $PROGRAM_NAME
 	script_options = CommitsScriptOptions.new(
-		args: ARGV, 
+		args: ARGV,
 		option_parser: OptionParser.new
 	)
 
