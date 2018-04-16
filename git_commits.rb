@@ -109,8 +109,8 @@ def commits_for_git_repo(
 				author_email = normalized_author_email
 			end
 
-			# Normalize the author name if it exists in the mapping that was provided.
-			if normalized_author_name = normalized_names[author_name]
+			# Normalize the author's name if it exists in the mapping that was provided.
+			if normalized_author_name = normalized_names[author_email]
 				if verbose
 					puts "NORMALIZED '#{author_name}' to '#{normalized_author_name}'"
 				end
@@ -231,8 +231,9 @@ class CommitsScriptOptions
 
 		option_parser.on(
 			"--normalized-names JSON",
-			"A JSON object where the keys are the committers' names and the values are what the names should be normalized to.",
+			"A JSON object where the keys are a committer's email address and the values are what the committer's name should be normalized to.",
 			"For when a single author has committed under multiple names or for that one crazy committer whose name makes absolutely no sense.",
+			"This normalization is applied after the committer's email address has been normalized by the parameter passed into --normalized-email-addresses. Therefore you should really only need to provide a normalized name for the one email address that represents a committer.",
 			"Can be either a JSON string or a path to a JSON file.",
 			JSON
 			) do |option_json|
