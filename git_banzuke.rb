@@ -6,15 +6,24 @@ require_relative "./git_leaderboard.rb"
 
 class BanzukeEntry
 	attr_reader :git_repository_path
+	attr_reader :normalized_email_addresses
 	attr_reader :normalized_names
-	attr_reader :banned_names
+	attr_reader :banned_email_addresses
 	attr_reader :banned_paths
 	attr_reader :output_path
 
-	def initialize(git_repository_path, normalized_names, banned_names, banned_paths, output_path)
+	def initialize(
+		git_repository_path:,
+		normalized_email_addresses:,
+		normalized_names:,
+		banned_email_addresses:,
+		banned_paths:,
+		output_path:
+	)
 		@git_repository_path = git_repository_path
+		@normalized_email_addresses = normalized_email_addresses
 		@normalized_names = normalized_names
-		@banned_names = banned_names
+		@banned_email_addresses = banned_email_addresses
 		@banned_paths = banned_paths
 		@output_path = output_path
 	end
@@ -28,19 +37,20 @@ class Banzuke
 	end
 
 	def append(author_summaries_to_append)
-		for (author_name, author_summary) in author_summaries_to_append
-			if banzuke_author_summary = @author_summaries[author_name]
+		for (author_email, author_summary) in author_summaries_to_append
+			if banzuke_author_summary = @author_summaries[author_email]
 				new_author_summary = AuthorSummary.new(
-					author_name: author_name,
+					author_name: banzuke_author_summary.author_name,
+					author_email: author_email,
 					number_of_commits: banzuke_author_summary.number_of_commits + author_summary.number_of_commits,
 					number_of_additions: banzuke_author_summary.number_of_additions + author_summary.number_of_additions,
 					number_of_deletions: banzuke_author_summary.number_of_deletions + author_summary.number_of_deletions,
 					number_of_files_modified: banzuke_author_summary.number_of_files_modified + author_summary.number_of_files_modified,
 					)
 
-				@author_summaries[author_name] = new_author_summary
+				@author_summaries[author_email] = new_author_summary
 			else
-				@author_summaries[author_name] = author_summary
+				@author_summaries[author_email] = author_summary
 			end
 		end
 	end
@@ -52,7 +62,10 @@ class BanzukeScriptOptions
 	attr_reader :output_raw
 	attr_reader :verbose
 
-	def initialize(args, option_parser)
+	def initialize(
+		args:,
+		option_parser:
+	)
 		@entries = []
 		@output_raw = true
 		@verbose = true
@@ -75,6 +88,17 @@ class BanzukeScriptOptions
 
 				for row in option_json
 					if git_repository_path = row["git_repository_path"]
+						if normalized_email_addresses = row["normalized_email_addresses"]
+							if normalized_email_addresses.is_a?(String) and File.file?(File.expand_path(normalized_email_addresses))
+								json_string = File.read(File.expand_path(normalized_email_addresses))
+								normalized_email_addresses = JSON.parse(json_string)
+							elsif !normalized_email_addresses.is_a?(Hash)
+								normalized_email_addresses = {}
+							end
+						else
+							normalized_email_addresses = {}
+						end
+
 						if normalized_names = row["normalized_names"]
 							if normalized_names.is_a?(String) and File.file?(File.expand_path(normalized_names))
 								json_string = File.read(File.expand_path(normalized_names))
@@ -86,15 +110,15 @@ class BanzukeScriptOptions
 							normalized_names = {}
 						end
 
-						if banned_names = row["banned_names"]
-							if banned_names.is_a?(String) and File.file?(File.expand_path(banned_names))
-								json_string = File.read(File.expand_path(banned_names))
-								banned_names = JSON.parse(json_string)
-							elsif !banned_names.is_a?(Array)
-								banned_names = []
+						if banned_email_addresses = row["banned_email_addresses"]
+							if banned_email_addresses.is_a?(String) and File.file?(File.expand_path(banned_email_addresses))
+								json_string = File.read(File.expand_path(banned_email_addresses))
+								banned_email_addresses = JSON.parse(json_string)
+							elsif !banned_email_addresses.is_a?(Array)
+								banned_email_addresses = []
 							end
 						else
-							banned_names = []
+							banned_email_addresses = []
 						end
 
 						if banned_paths = row["banned_paths"]
@@ -110,7 +134,14 @@ class BanzukeScriptOptions
 
 						output_path = row["output_path"]
 
-						entry = BanzukeEntry.new(git_repository_path, normalized_names, banned_names, banned_paths, output_path)
+						entry = BanzukeEntry.new(
+							git_repository_path: git_repository_path,
+							normalized_email_addresses: normalized_email_addresses,
+							normalized_names: normalized_names,
+							banned_email_addresses: banned_email_addresses,
+							banned_paths: banned_paths,
+							output_path: output_path
+						)
 						entries.push(entry)
 					end
 				end
@@ -152,7 +183,10 @@ end
 if __FILE__ == $PROGRAM_NAME
 	ARGV << "--help" if ARGV.empty?
 
-	script_options = BanzukeScriptOptions.new(ARGV, OptionParser.new)
+	script_options = BanzukeScriptOptions.new(
+		args: ARGV, 
+		option_parser: OptionParser.new
+	)
 
 	banzuke = Banzuke.new
 	raw_banzuke = Banzuke.new
@@ -164,8 +198,9 @@ if __FILE__ == $PROGRAM_NAME
 
 		author_summaries = author_summaries_for(
 			git_repository_path: entry.git_repository_path,
+			normalized_email_addresses: entry.normalized_email_addresses,
 			normalized_names: entry.normalized_names,
-			banned_names: entry.banned_names,
+			banned_email_addresses: entry.banned_email_addresses,
 			banned_paths: entry.banned_paths,
 			verbose: script_options.verbose
 		)

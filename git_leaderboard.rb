@@ -94,7 +94,7 @@ def process(
 	if output_path
 		csv_file = File.open(File.expand_path("#{output_path}.csv"), "w")
 		csv_file.write("Author,Email,Commits,% of Commits,Additions,% of Additions,Deletions,% of Deletions,Files Modified,% of Files Modified")
-		csv_file.write("\n,#{total_commits},100,#{total_additions},100,#{total_deletions},100,#{total_files_modified},100")
+		csv_file.write("\n,,#{total_commits},100,#{total_additions},100,#{total_deletions},100,#{total_files_modified},100")
 	end
 
 	sorted_author_summaries_by_number_of_commits.each do |author_summary|
