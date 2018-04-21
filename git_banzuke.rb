@@ -196,6 +196,11 @@ if __FILE__ == $PROGRAM_NAME
 			puts "Computing the leaderboard for #{entry.git_repository_path}"
 		end
 
+		Dir.chdir(File.expand_path(entry.git_repository_path)) do
+			`git fetch`
+			`git checkout master`
+		end
+
 		author_summaries = author_summaries_for(
 			git_repository_path: entry.git_repository_path,
 			normalized_email_addresses: entry.normalized_email_addresses,
