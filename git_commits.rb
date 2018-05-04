@@ -3,16 +3,25 @@
 require "json"
 require "optparse"
 
-=begin rdoc
-A class that represents all of the information associated with a commit in a git repository.
-=end
+# An immutable class that represents information associated with a commit in git.
 class Commit
+	# An immutable class that represents information associated with a file modification in git.
 	class FileModification
+		# @return [String] the relative path of the file.
 		attr_reader :path
+		# @return [String, nil] the original path of the file if it was a move/rename, otherwise nil.
 		attr_reader :original_path
+		# @return [Integer] the total number of lines added to the file.
 		attr_reader :number_of_additions
+		# @return [Integer] the total number of lines deleted from the file.
 		attr_reader :number_of_deletions
 
+		# Initializes a new instance of {FileModification}.
+		#
+		# @param [String] path The relative path of the file that was modified.
+		# @param [String, nil] original_path The original path of the file if it was a move/rename.
+		# @param [Integer] number_of_additions The total number of lines that were added to the file.
+		# @param [Integer] number_of_deletions The total number of lines that were deleted from the file.
 		def initialize(
 			path:, 
 			original_path:, 
@@ -25,18 +34,31 @@ class Commit
 			@number_of_deletions = number_of_deletions
 		end
 
+		# @return [String] a human readable string representation of the file modification.
 		def to_s
 			return "+#{@number_of_additions}\t-#{@number_of_deletions}\t#{@path}"
 		end
 	end
 
+	# @return [String] the name of the author of the commit.
 	attr_reader :author_name
+	# @return [String] the email of the author of the commit.
 	attr_reader :author_email
+	# @return [String] the 40-character SHA-1 hash of the commit.
 	attr_reader :hash
+	# @return [Array<FileModification>] an array of the file modifications that occured in the commit.
 	attr_reader :file_modifications
+	# @return [Integer] the total number of lines added across all file modifications in the commit.
 	attr_reader :number_of_additions
+	# @return [Integer] the total number of lines deleted across all file modifications in the commit.
 	attr_reader :number_of_deletions
 
+	# Initializes a new instance of {Commit}.
+	#
+	# @param [String] author_name The name of the author of the commit.
+	# @param [String] author_email The email of the author of the commit.
+	# @param [String] hash The 40-character SHA-1 hash of the commit.
+	# @param [Array<FileModification>] file_modifications An array of the file modifications that occured in the commit.
 	def initialize(
 		author_name:, 
 		author_email:, 
@@ -56,17 +78,25 @@ class Commit
 		end
 	end
 
+	# @return [String] a human readable string representation of the commit.
 	def to_s
 		return "Author: #{@author_name}\nEmail: #{author_email}\nHash: #{@hash}\nAdditions: #{@number_of_additions}\nDeletions: #{@number_of_deletions}\n#{@file_modifications.join("\n")}"
 	end
 end
 
-=begin rdoc
-Returns an array of Commit objects for the given git repository.
-
-These Commit objects may have been sanitized if any of the other parameters specifying certain filtering rules were passed in.
-=end
-def commits_for_git_repo(
+# Generates an array of {Commit} objects for a git repository.
+#
+# These Commit objects may be sanitized if any of the normalization or filtering parameters are provided. By default the Commit objects will match the raw information provided by "git log".
+#
+# @param [String] git_repository_path The path to the root of the git repository to generate commits from.
+# @param [Hash{String => String}] normalized_email_addresses A hash where the keys are a author's email address and the values are what that email address should be normalized to. Defaults to an empty hash.
+# @param [Hash{String => String}] normalized_names A hash where the keys are a author's email address and the values are what that author's name should be normalized to. This mapping is applied after the email addresses have already been normalized by the normalized_email_addresses parameter so you should tpyically have to only normalize a author's name once. Defaults to an empty hash.
+# @param [Array<String>] banned_email_addresses An array of email addresses for authors whose commits should be ignored. Defaults to an empty array.
+# @param [Array<String>] banned_paths An array of regular expressions that will be evaluated against file modification paths to determine if the file modification should be omitted or not. Defaults to an empty array.
+# @param [Boolean] verbose A flag indicating if actions should but outputted to the console. Defaults to false.
+#
+# @return [Array<Commit>] An array of commit objects.
+def commits_for(
 	git_repository_path:,
 	normalized_email_addresses: {},
 	normalized_names: {},
@@ -182,14 +212,27 @@ def commits_for_git_repo(
 	return commits
 end
 
+# A class to represent all of the arguments that can be passed into the git_commits.rb script via the command line.
+#
+# While it's primary function is to parse arguments passed in from the command line it is also designed to be subclassed. This is to make it easier for scripts that want to leverage git_commits.rb to gather the same type of information.
 class CommitsScriptOptions
+	# @return [String] the value of the "--git-repository" argument.
 	attr_reader :git_repository_path
+	# @return [Hash{String => String}] the value of the "--normalized-email-addresses" argument.
 	attr_reader :normalized_email_addresses
+	# @return [Hash{String => String}] the value of the "--normalized-names" argument.
 	attr_reader :normalized_names
+	# @return [Array<String>] the value of the "--banned-email-addresses" argument.
 	attr_reader :banned_email_addresses
+	# @return [Array<String>] the value of the "--banned-paths" argument.
 	attr_reader :banned_paths
+	# @return [Boolean] the value of the "--verbose" argument.
 	attr_reader :verbose
 
+	# Initializes a new instance of {CommitsScriptOptions} that will automatically parse command line arguments.
+	#
+	# @param [Array<String>] args The arguments that were passed into the command line.
+	# @param [OptionParser] option_parser An OptionParser to use to parse the args parameter.
 	def initialize(
 		args:, 
 		option_parser:
@@ -221,7 +264,7 @@ class CommitsScriptOptions
 
 		option_parser.on(
 			"--normalized-email-addresses JSON",
-			"A JSON object where the keys are a committer's email address and the values are what that email address should be normalized to.",
+			"A JSON object where the keys are a author's email address and the values are what that email address should be normalized to.",
 			"For when a single author has committed under multiple email addresses.",
 			"Can be either a JSON string or a path to a JSON file.",
 			JSON
@@ -231,9 +274,9 @@ class CommitsScriptOptions
 
 		option_parser.on(
 			"--normalized-names JSON",
-			"A JSON object where the keys are a committer's email address and the values are what the committer's name should be normalized to.",
-			"For when a single author has committed under multiple names or for that one crazy committer whose name makes absolutely no sense.",
-			"This normalization is applied after the committer's email address has been normalized by the parameter passed into --normalized-email-addresses. Therefore you should really only need to provide a normalized name for the one email address that represents a committer.",
+			"A JSON object where the keys are a author's email address and the values are what the author's name should be normalized to.",
+			"For when a single author has committed under multiple names or for that one crazy author whose name makes absolutely no sense.",
+			"This normalization is applied after the author's email address has been normalized by the parameter passed into --normalized-email-addresses. Therefore you should really only need to provide a normalized name for the one email address that represents a author.",
 			"Can be either a JSON string or a path to a JSON file.",
 			JSON
 		) do |option_json|
@@ -241,7 +284,7 @@ class CommitsScriptOptions
 		end
 
 		option_parser.on(
-			"--banned-names JSON",
+			"--banned-email-addresses JSON",
 			"A JSON array of author email addresses whose commits should be ignored.",
 			"Primarily designed for authors whose commits are automated.",
 			"Can be either a JSON string or a path to a JSON file.",
@@ -278,7 +321,7 @@ if __FILE__ == $PROGRAM_NAME
 		option_parser: OptionParser.new
 	)
 
-	commits_for_git_repo(
+	commits_for(
 		git_repository_path: script_options.git_repository_path,
 		normalized_email_addresses: script_options.normalized_email_addresses,
 		normalized_names: script_options.normalized_names,
