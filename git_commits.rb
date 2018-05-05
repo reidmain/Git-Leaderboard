@@ -3,7 +3,9 @@
 require "json"
 require "optparse"
 
-# The Git module's purpose is to encompase all classes and methods that act upon git repositories.
+# The Git module contains classes and methods to interact with git repositories.
+#
+# Not all interactions will map directly to git commands. There will be a number of classes and methods that exist solely to facilate functionality of the Git Leaderboard project.
 module Git
 	# An immutable class that represents information associated with a commit in git.
 	class Commit
@@ -91,8 +93,8 @@ module Git
 	# These Commit objects may be sanitized if any of the normalization or filtering parameters are provided. By default the Commit objects will match the raw information provided by "git log".
 	#
 	# @param [String] git_repository_path The path to the root of the git repository to generate commits from.
-	# @param [Hash{String => String}] normalized_email_addresses A hash where the keys are a author's email address and the values are what that email address should be normalized to. Defaults to an empty hash.
-	# @param [Hash{String => String}] normalized_names A hash where the keys are a author's email address and the values are what that author's name should be normalized to. This mapping is applied after the email addresses have already been normalized by the normalized_email_addresses parameter so you should typically have to only normalize a author's name once. Defaults to an empty hash.
+	# @param [Hash{String => String}] normalized_email_addresses A hash where the keys are an author's email address and the values are what that email address should be normalized to. Defaults to an empty hash.
+	# @param [Hash{String => String}] normalized_names A hash where the keys are an author's email address and the values are what that author's name should be normalized to. This mapping is applied after the email addresses have already been normalized by the normalized_email_addresses parameter so you should typically have to only normalize an author's name once. Defaults to an empty hash.
 	# @param [Array<String>] banned_email_addresses An array of email addresses for authors whose commits should be ignored. Defaults to an empty array.
 	# @param [Array<String>] banned_paths An array of regular expressions that will be evaluated against file modification paths to determine if the file modification should be omitted or not. Defaults to an empty array.
 	# @param [Boolean] verbose A flag indicating if actions should be outputted to the console. Defaults to false.
@@ -215,111 +217,118 @@ module Git
 	end
 end
 
-# A class to represent all of the arguments that can be passed into the git_commits.rb script via the command line.
+# The Scripts module contains classes and methods that are leveraged when the Git Leaderboard project is accessed via the command line.
 #
-# While it's primary function is to parse arguments passed in from the command line it is also designed to be subclassed. This is to make it easier for scripts that want to leverage git_commits.rb to gather the same type of information.
-class CommitsScriptOptions
-	# @return [String] the value of the "--git-repository" argument.
-	attr_reader :git_repository_path
-	# @return [Hash{String => String}] the value of the "--normalized-email-addresses" argument.
-	attr_reader :normalized_email_addresses
-	# @return [Hash{String => String}] the value of the "--normalized-names" argument.
-	attr_reader :normalized_names
-	# @return [Array<String>] the value of the "--banned-email-addresses" argument.
-	attr_reader :banned_email_addresses
-	# @return [Array<String>] the value of the "--banned-paths" argument.
-	attr_reader :banned_paths
-	# @return [Boolean] the value of the "--verbose" argument.
-	attr_reader :verbose
-
-	# Initializes a new instance of {CommitsScriptOptions} that will automatically parse command line arguments.
+# This module should only be used if you are building a command line tool. Otherwise, everything that you need should be in the {Git} module.
+module Scripts
+	# The {CommitsOptions} class encapsulates all of the options that can be passed into the git_commits.rb script via the command line.
 	#
-	# @param [Array<String>] args The arguments that were passed into the command line.
-	# @param [OptionParser] option_parser An OptionParser to use to parse the args parameter.
-	def initialize(
-		args:, 
-		option_parser:
-	)
-		@git_repository_path = Dir.pwd
-		@normalized_email_addresses = {}
-		@normalized_names = {}
-		@banned_email_addresses = []
-		@banned_paths = []
-		@verbose = true
+	# It is designed to be subclassed in case any scripts want to directly leverage the capabilities of git_commits.rb and therefore need to gather the same options.
+	class CommitsOptions
+		# @return [String] the value of the "--git-repository" option.
+		attr_reader :git_repository_path
+		# @return [Hash{String => String}] the value of the "--normalized-email-addresses" option.
+		attr_reader :normalized_email_addresses
+		# @return [Hash{String => String}] the value of the "--normalized-names" option.
+		attr_reader :normalized_names
+		# @return [Array<String>] the value of the "--banned-email-addresses" option.
+		attr_reader :banned_email_addresses
+		# @return [Array<String>] the value of the "--banned-paths" option.
+		attr_reader :banned_paths
+		# @return [Boolean] the value of the "--verbose" option.
+		attr_reader :verbose
 
-		option_parser.accept(JSON) do |option_json|
-			if File.file?(option_json)
-				json_string = File.read(option_json)
-				JSON.parse(json_string)
-			else
-				JSON.parse(option_json)
+		# Initializes a new instance of {CommitsOptions}.
+		#
+		# The option_parser will parse the args parameter and use the results to populate all of the attributes.
+		#
+		# @param [Array<String>] args The arguments that were passed in to the command line.
+		# @param [OptionParser] option_parser An OptionParser that will consume the args parameter.
+		def initialize(
+			args:, 
+			option_parser:
+		)
+			@git_repository_path = Dir.pwd
+			@normalized_email_addresses = {}
+			@normalized_names = {}
+			@banned_email_addresses = []
+			@banned_paths = []
+			@verbose = true
+
+			option_parser.accept(JSON) do |option_json|
+				if File.file?(option_json)
+					json_string = File.read(option_json)
+					JSON.parse(json_string)
+				else
+					JSON.parse(option_json)
+				end
 			end
-		end
 
-		option_parser.on(
-			"--git-repository PATH",
-			String,
-			"Path to the git repository to analyze.",
-			"Defaults to the current directory if no path is provided."
-		) do |option_path|
-			@git_repository_path = option_path
-		end
+			option_parser.on(
+				"--git-repository PATH",
+				String,
+				"Path of the git repository to analyze.",
+				"Defaults to the current directory if none is provided."
+			) do |option_path|
+				@git_repository_path = option_path
+			end
 
-		option_parser.on(
-			"--normalized-email-addresses JSON",
-			"A JSON object where the keys are a author's email address and the values are what that email address should be normalized to.",
-			"For when a single author has committed under multiple email addresses.",
-			"Can be either a JSON string or a path to a JSON file.",
-			JSON
-		) do |option_json|
-			@normalized_email_addresses = option_json
-		end
+			option_parser.on(
+				"--normalized-email-addresses JSON",
+				"A JSON object where the keys are an author's email address and the values are what that email address should be normalized to.",
+				"For when a single author has committed under multiple email addresses.",
+				"Can be either a JSON string or a path to a JSON file.",
+				JSON
+			) do |option_json|
+				@normalized_email_addresses = option_json
+			end
 
-		option_parser.on(
-			"--normalized-names JSON",
-			"A JSON object where the keys are a author's email address and the values are what the author's name should be normalized to.",
-			"For when a single author has committed under multiple names or for that one crazy author whose name makes absolutely no sense.",
-			"This normalization is applied after the author's email address has been normalized by the parameter passed into --normalized-email-addresses. Therefore you should really only need to provide a normalized name for the one email address that represents a author.",
-			"Can be either a JSON string or a path to a JSON file.",
-			JSON
-		) do |option_json|
-			@normalized_names = option_json
-		end
+			option_parser.on(
+				"--normalized-names JSON",
+				"A JSON object where the keys are an author's email address and the values are what the author's name should be normalized to.",
+				"For when a single author has committed under multiple names or for that one crazy author whose name makes absolutely no sense.",
+				"This normalization is applied after the author's email address has been normalized by the mapping passed to --normalized-email-addresses. Therefore you should only need to provide a normalized name for the one email address that represents an author.",
+				"Can be either a JSON string or a path to a JSON file.",
+				JSON
+			) do |option_json|
+				@normalized_names = option_json
+			end
 
-		option_parser.on(
-			"--banned-email-addresses JSON",
-			"A JSON array of author email addresses whose commits should be ignored.",
-			"Primarily designed for authors whose commits are automated.",
-			"Can be either a JSON string or a path to a JSON file.",
-			JSON
-		) do |option_json|
-			@banned_email_addresses = option_json
-		end
+			option_parser.on(
+				"--banned-email-addresses JSON",
+				"A JSON array of author email addresses whose commits should be ignored.",
+				"Primarily designed for authors whose commits are automated.",
+				"Can be either a JSON string or a path to a JSON file.",
+				JSON
+			) do |option_json|
+				@banned_email_addresses = option_json
+			end
 
-		option_parser.on(
-			"--banned-paths JSON",
-			"A JSON array of regular expressions used to omit file modifications to specific paths.",
-			"Can be either a JSON string or a path to a JSON file.",
-			JSON
-		) do |option_json|
-			@banned_paths = option_json
-		end
+			option_parser.on(
+				"--banned-paths JSON",
+				"A JSON array of regular expressions used to omit file modifications to specific paths.",
+				"Can be either a JSON string or a path to a JSON file.",
+				JSON
+			) do |option_json|
+				@banned_paths = option_json
+			end
 
-		option_parser.on(
-			"--verbose BOOL",
-			"A switch to determine if actions taken should be outputted to the console.",
-			"Defaults to true.",
-			TrueClass
-		) do |flag|
-			@verbose = flag
-		end
+			option_parser.on(
+				"--verbose BOOL",
+				"A switch to determine if actions taken should be outputted to the console.",
+				"Defaults to true.",
+				TrueClass
+			) do |flag|
+				@verbose = flag
+			end
 
-		option_parser.parse(args)
+			option_parser.parse(args)
+		end
 	end
 end
 
 if __FILE__ == $PROGRAM_NAME
-	script_options = CommitsScriptOptions.new(
+	script_options = Scripts::CommitsOptions.new(
 		args: ARGV,
 		option_parser: OptionParser.new
 	)

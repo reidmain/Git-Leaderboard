@@ -223,52 +223,56 @@ module Git
 	end
 end
 
-# A class to represent all of the arguments that can be passed into the git_leaderboards.rb script via the command line.
-#
-# While it's primary function is to parse arguments passed in from the command line it is also designed to be subclassed. This is to make it easier for scripts that want to leverage git_leaderboards.rb to gather the same type of information.
-class LeaderboardScriptOptions < CommitsScriptOptions
-	# @return [String, nil] the value of the "--output-path" argument.
-	attr_reader :output_path
-	# @return [Boolean] the value of the "--output-raw" argument.
-	attr_reader :output_raw
-
-	# Initializes a new instance of {LeaderboardScriptOptions} that will automatically parse command line arguments.
+module Scripts
+	# The {LeaderboardOptions} class encapsulates all of the options that can be passed into the git_leaderboard.rb script via the command line.
 	#
-	# @param [Array<String>] args The arguments that were passed into the command line.
-	# @param [OptionParser] option_parser An OptionParser to use to parse the args parameter.
-	def initialize(
-		args:, 
-		option_parser:
-	)
-		@output_raw = true
+	# It is designed to be subclassed in case any scripts want to directly leverage the capabilities of git_leaderboard.rb and therefore need to gather the same options.
+	class LeaderboardOptions < CommitsOptions
+		# @return [String, nil] the value of the "--output-path" argument.
+		attr_reader :output_path
+		# @return [Boolean] the value of the "--output-raw" argument.
+		attr_reader :output_raw
 
-		option_parser.on(
-			"--output-path PATH",
-			String,
-			"The path that the script should save its output to.",
-			"The output will be a comma-separated values text file and as such will automatically have \".csv\" appended to it."
-		) do |output_path|
-			@output_path = output_path
-		end
-
-		option_parser.on(
-			"--output-raw BOOL",
-			"A switch to determine if the unfiltered leaderboard should also be outputted.",
-			"Defaults to true.",
-			TrueClass
-		) do |flag|
-			@verbose = flag
-		end
-
-		super(
-			args: args, 
-			option_parser: option_parser
+		# Initializes a new instance of {LeaderboardOptions}.
+		#
+		# The option_parser will parse the args parameter and use the results to populate all of the attributes.
+		#
+		# @param [Array<String>] args The arguments that were passed in to the command line.
+		# @param [OptionParser] option_parser An OptionParser that will consume the args parameter.
+		def initialize(
+			args:, 
+			option_parser:
 		)
+			@output_raw = true
+
+			option_parser.on(
+				"--output-path PATH",
+				String,
+				"The path that the script should write its output to.",
+				"The output will be a comma-separated values text file and as such will automatically have \".csv\" appended to it."
+			) do |output_path|
+				@output_path = output_path
+			end
+
+			option_parser.on(
+				"--output-raw BOOL",
+				"A switch to determine if a leaderboard with no filtering should also be outputted. The email addresses and names will still be normalized.",
+				"Defaults to true.",
+				TrueClass
+			) do |flag|
+				@verbose = flag
+			end
+
+			super(
+				args: args, 
+				option_parser: option_parser
+			)
+		end
 	end
 end
 
 if __FILE__ == $PROGRAM_NAME
-	script_options = LeaderboardScriptOptions.new(
+	script_options = Scripts::LeaderboardOptions.new(
 		args: ARGV, 
 		option_parser: OptionParser.new
 	)
