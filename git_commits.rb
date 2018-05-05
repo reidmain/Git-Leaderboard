@@ -7,9 +7,9 @@ require "optparse"
 #
 # Not all interactions will map directly to git commands. There will be a number of classes and methods that exist solely to facilate functionality of the Git Leaderboard project.
 module Git
-	# An immutable class that represents information associated with a commit in git.
+	# An immutable class that encapsulates information gleaned from a single commit in a git repository.
 	class Commit
-		# An immutable class that represents information associated with a file modification in git.
+		# An immutable class that encapsulates information gleaned from a single file modification in a git commit.
 		class FileModification
 			# @return [String] the relative path of the file.
 			attr_reader :path
@@ -44,23 +44,23 @@ module Git
 			end
 		end
 
-		# @return [String] the name of the author of the commit.
+		# @return [String] the name of the author.
 		attr_reader :author_name
-		# @return [String] the email of the author of the commit.
+		# @return [String] the email of the author.
 		attr_reader :author_email
 		# @return [String] the 40-character SHA-1 hash of the commit.
 		attr_reader :hash
 		# @return [Array<FileModification>] an array of the file modifications that occured in the commit.
 		attr_reader :file_modifications
-		# @return [Integer] the total number of lines added across all file modifications in the commit.
+		# @return [Integer] the total number of lines added across all file modifications.
 		attr_reader :number_of_additions
-		# @return [Integer] the total number of lines deleted across all file modifications in the commit.
+		# @return [Integer] the total number of lines deleted across all file modifications.
 		attr_reader :number_of_deletions
 
 		# Initializes a new instance of {Commit}.
 		#
-		# @param [String] author_name The name of the author of the commit.
-		# @param [String] author_email The email of the author of the commit.
+		# @param [String] author_name The name of the author.
+		# @param [String] author_email The email of the author.
 		# @param [String] hash The 40-character SHA-1 hash of the commit.
 		# @param [Array<FileModification>] file_modifications An array of the file modifications that occured in the commit.
 		def initialize(
@@ -92,14 +92,14 @@ module Git
 	#
 	# These Commit objects may be sanitized if any of the normalization or filtering parameters are provided. By default the Commit objects will match the raw information provided by "git log".
 	#
-	# @param [String] git_repository_path The path to the root of the git repository to generate commits from.
+	# @param [String] git_repository_path The path to the root of the git repository to generate commits for.
 	# @param [Hash{String => String}] normalized_email_addresses A hash where the keys are an author's email address and the values are what that email address should be normalized to. Defaults to an empty hash.
-	# @param [Hash{String => String}] normalized_names A hash where the keys are an author's email address and the values are what that author's name should be normalized to. This mapping is applied after the email addresses have already been normalized by the normalized_email_addresses parameter so you should typically have to only normalize an author's name once. Defaults to an empty hash.
+	# @param [Hash{String => String}] normalized_names A hash where the keys are an author's email address and the values are what that author's name should be normalized to. This mapping is applied after the email addresses have already been normalized by the normalized_email_addresses parameter. Typically you should only have to normalize an author's name once because every author should have a unique email address. Defaults to an empty hash.
 	# @param [Array<String>] banned_email_addresses An array of email addresses for authors whose commits should be ignored. Defaults to an empty array.
-	# @param [Array<String>] banned_paths An array of regular expressions that will be evaluated against file modification paths to determine if the file modification should be omitted or not. Defaults to an empty array.
-	# @param [Boolean] verbose A flag indicating if actions should be outputted to the console. Defaults to false.
+	# @param [Array<String>] banned_paths An array of regular expressions that will be evaluated against file modification paths to determine if the file modification should be ignored or not. Defaults to an empty array.
+	# @param [Boolean] verbose A flag indicating if every commit should be outputted to the console. Defaults to false.
 	#
-	# @return [Array<Commit>] An array of commit objects.
+	# @return [Array<Commit>] An array of commits.
 	def self.commits_for(
 		git_repository_path:,
 		normalized_email_addresses: {},
@@ -306,7 +306,7 @@ module Scripts
 
 			option_parser.on(
 				"--banned-paths JSON",
-				"A JSON array of regular expressions used to omit file modifications to specific paths.",
+				"A JSON array of regular expressions used to ignore file modifications of specific paths.",
 				"Can be either a JSON string or a path to a JSON file.",
 				JSON
 			) do |option_json|

@@ -5,7 +5,7 @@ require "optparse"
 require_relative "./git_commits.rb"
 
 module Git
-	# A class that represents information about all of the commits for an author in a git repository.
+	# {AuthorSummary} is an accumulator class designed to gather information and statistics about commits that an author made to a git repository.
 	class AuthorSummary
 		# @return [String] the name of the author.
 		attr_reader :author_name
@@ -22,8 +22,8 @@ module Git
 
 		# Initializes a new instance of {AuthorSummary}.
 		#
-		# @param [String] author_name The name of the author of the commit.
-		# @param [String] author_email The email of the author of the commit.
+		# @param [String] author_name The name of the author.
+		# @param [String] author_email The email of the author.
 		# @param [Integer] number_of_commits The total number of commits made by the author.
 		# @param [Integer] number_of_additions The total number of lines added by the author.
 		# @param [Integer] number_of_deletions The total number of lines deleted by the author.
@@ -44,11 +44,11 @@ module Git
 			@number_of_files_modified = number_of_files_modified
 		end
 
-		# Uses the commit to increment the various values the author summary is tracking.
+		# Uses the commit to increment the various statistics the author summary is tracking.
 		#
 		# This is predominantly a helper method because it would be more taxing to keep an array of all {Commit} objects for an author and then pass them into the initializer.
 		#
-		# @param [Commit] commit The commmit to add to the author summary.
+		# @param [Commit] commit A commmit made by the author of the author summary.
 		def append(commit:)
 			@number_of_commits += 1
 			@number_of_additions += commit.number_of_additions
@@ -64,18 +64,18 @@ module Git
 
 	# Generates an array of {AuthorSummary} objects for a git repository.
 	#
-	# The {Commit}s for the repository are queried and then grouped together by their author's email addresses.
+	# An array of {Commit} objects are gathered for the git repository and then grouped by their authors' email addresses to generate each {AuthorSummary}.
 	#
 	# These Commit objects may be sanitized if any of the normalization or filtering parameters are provided. By default the Commit objects will match the raw information provided by "git log".
 	#
-	# @param [String] git_repository_path The path to the root of the git repository to generate author summaries from.
+	# @param [String] git_repository_path The path to the root of the git repository to generate author summaries for.
 	# @param [Hash{String => String}] normalized_email_addresses A hash where the keys are a author's email address and the values are what that email address should be normalized to. Defaults to an empty hash.
-	# @param [Hash{String => String}] normalized_names A hash where the keys are a author's email address and the values are what that author's name should be normalized to. This mapping is applied after the email addresses have already been normalized by the normalized_email_addresses parameter so you should typically have to only normalize a author's name once. Defaults to an empty hash.
+	# @param [Hash{String => String}] normalized_names A hash where the keys are an author's email address and the values are what that author's name should be normalized to. This mapping is applied after the email addresses have already been normalized by the normalized_email_addresses parameter. Typically you should only have to normalize an author's name once because every author should have a unique email address. Defaults to an empty hash.
 	# @param [Array<String>] banned_email_addresses An array of email addresses for authors whose commits should be ignored. Defaults to an empty array.
-	# @param [Array<String>] banned_paths An array of regular expressions that will be evaluated against file modification paths to determine if the file modification should be omitted or not. Defaults to an empty array.
-	# @param [Boolean] verbose A flag indicating if actions should be outputted to the console. Defaults to false.
+	# @param [Array<String>] banned_paths An array of regular expressions that will be evaluated against file modification paths to determine if the file modification should be ignored or not. Defaults to an empty array.
+	# @param [Boolean] verbose A flag indicating if every commit should be outputted to the console. Defaults to false.
 	#
-	# @return [Array<AuthorSummary>] An array of author summary objects.
+	# @return [Array<AuthorSummary>] An array of author summaries.
 	def self.author_summaries_for(
 		git_repository_path:,
 		normalized_email_addresses: {},
@@ -115,11 +115,13 @@ module Git
 		return author_summaries
 	end
 
-	# Consumes an array of {AuthorSummary} objects, sorts them by number of commits and then outputs the results to a CSV file and/or the console.
+	# Consumes an array of {AuthorSummary} objects and outputs a leaderboard to a CSV file and/or the console.
+	#
+	# The leaderboard is generated by grouping the author summaries by authors' email addresses, computing the necessary statistics, and then outputting the results to a CSV file and/or the console.
 	#
 	# @param [Array<AuthorSummary>] author_summaries An array of author summaries to collate.
 	# @param [String] output_path The path where a comma-separated values text file should be outtputed to. The extension \".csv\" will automatically be  appended.
-	# @param [Boolean] verbose A flag indicating if actions should be outputted to the console. Defaults to false.
+	# @param [Boolean] verbose A flag indicating if the leaderboard should be outputted to the console. Defaults to false.
 	def self.output_leaderboard_for(
 		author_summaries:,
 		output_path:,
@@ -171,16 +173,18 @@ module Git
 
 	# Generates a leaderboard for a git repository.
 	#
-	# The leaderboard is constructed by querying all of the {Commit}s for the repository (normalizing and filtering as necessary) and then grouping them by author's email address. The results can be either outputted to a csv file and/or the console.
+	# The leaderboard is constructed by gathering an array of {Commit} objects from the git repository (normalizing and filtering them as required), grouping the commits by the author's email address, computing the necessary statistics, and then outputting the results to a CSV file and/or the console.
+	#
+	# A secondary leaderboard can be generated in the same manner as the first except no filtering is applied. This is useful to see exactly what kind of reductions your filtering had on the leaderboard.
 	#
 	# @param [String] git_repository_path The path to the root of the git repository to generate the leaderboard for.
 	# @param [Hash{String => String}] normalized_email_addresses A hash where the keys are a author's email address and the values are what that email address should be normalized to.
-	# @param [Hash{String => String}] normalized_names A hash where the keys are a author's email address and the values are what that author's name should be normalized to. This mapping is applied after the email addresses have already been normalized by the normalized_email_addresses parameter so you should typically have to only normalize a author's name once.
+	# @param [Hash{String => String}] normalized_names A hash where the keys are an author's email address and the values are what that author's name should be normalized to. This mapping is applied after the email addresses have already been normalized by the normalized_email_addresses parameter. Typically you should only have to normalize an author's name once because every author should have a unique email address.
 	# @param [Array<String>] banned_email_addresses An array of email addresses for authors whose commits should be ignored.
-	# @param [Array<String>] banned_paths An array of regular expressions that will be evaluated against file modification paths to determine if the file modification should be omitted or not.
+	# @param [Array<String>] banned_paths An array of regular expressions that will be evaluated against file modification paths to determine if the file modification should be ignored or not.
 	# @param [String, nil] output_path The path where a comma-separated values text file should be outtputed to. The extension \".csv\" will automatically be  appended.
-	# @param [Boolean] output_raw A flag indicating if a second leaderboard with no filtering should also be generatated.
-	# @param [Boolean] verbose A flag indicating if actions should be outputted to the console.
+	# @param [Boolean] output_unfiltered A flag indicating if a second leaderboard with no filtering should also be generatated.
+	# @param [Boolean] verbose A flag indicating if every commit and the leaderboard should be outputted to the console.
 	def self.generate_leaderboard_for(
 		git_repository_path:,
 		normalized_email_addresses:,
@@ -188,7 +192,7 @@ module Git
 		banned_email_addresses:,
 		banned_paths:,
 		output_path:,
-		output_raw:,
+		output_unfiltered:,
 		verbose:
 	)
 		author_summaries = author_summaries_for(
@@ -206,8 +210,8 @@ module Git
 			verbose: verbose
 		)
 
-		if output_raw and output_path.nil? == false
-			raw_author_summaries = author_summaries_for(
+		if output_unfiltered and output_path.nil? == false
+			unfiltered_author_summaries = author_summaries_for(
 				git_repository_path: git_repository_path,
 				normalized_email_addresses: normalized_email_addresses,
 				normalized_names: normalized_names,
@@ -215,8 +219,8 @@ module Git
 			)
 
 			output_leaderboard_for(
-				author_summaries: raw_author_summaries,
-				output_path: "#{output_path}_raw",
+				author_summaries: unfiltered_author_summaries,
+				output_path: "#{output_path}_unfiltered",
 				verbose: false
 			)
 		end
@@ -230,8 +234,8 @@ module Scripts
 	class LeaderboardOptions < CommitsOptions
 		# @return [String, nil] the value of the "--output-path" argument.
 		attr_reader :output_path
-		# @return [Boolean] the value of the "--output-raw" argument.
-		attr_reader :output_raw
+		# @return [Boolean] the value of the "--output-unfiltered" argument.
+		attr_reader :output_unfiltered
 
 		# Initializes a new instance of {LeaderboardOptions}.
 		#
@@ -243,7 +247,7 @@ module Scripts
 			args:, 
 			option_parser:
 		)
-			@output_raw = true
+			@output_unfiltered = true
 
 			option_parser.on(
 				"--output-path PATH",
@@ -255,12 +259,12 @@ module Scripts
 			end
 
 			option_parser.on(
-				"--output-raw BOOL",
+				"--output-unfiltered BOOL",
 				"A switch to determine if a leaderboard with no filtering should also be outputted. The email addresses and names will still be normalized.",
 				"Defaults to true.",
 				TrueClass
 			) do |flag|
-				@verbose = flag
+				@output_unfiltered = flag
 			end
 
 			super(
@@ -284,7 +288,7 @@ if __FILE__ == $PROGRAM_NAME
 		banned_email_addresses: script_options.banned_email_addresses,
 		banned_paths: script_options.banned_paths,
 		output_path: script_options.output_path,
-		output_raw: script_options.output_raw,
+		output_unfiltered: script_options.output_unfiltered,
 		verbose: script_options.verbose
 	)
 end
