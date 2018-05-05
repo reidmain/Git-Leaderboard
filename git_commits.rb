@@ -92,10 +92,10 @@ module Git
 	#
 	# @param [String] git_repository_path The path to the root of the git repository to generate commits from.
 	# @param [Hash{String => String}] normalized_email_addresses A hash where the keys are a author's email address and the values are what that email address should be normalized to. Defaults to an empty hash.
-	# @param [Hash{String => String}] normalized_names A hash where the keys are a author's email address and the values are what that author's name should be normalized to. This mapping is applied after the email addresses have already been normalized by the normalized_email_addresses parameter so you should tpyically have to only normalize a author's name once. Defaults to an empty hash.
+	# @param [Hash{String => String}] normalized_names A hash where the keys are a author's email address and the values are what that author's name should be normalized to. This mapping is applied after the email addresses have already been normalized by the normalized_email_addresses parameter so you should typically have to only normalize a author's name once. Defaults to an empty hash.
 	# @param [Array<String>] banned_email_addresses An array of email addresses for authors whose commits should be ignored. Defaults to an empty array.
 	# @param [Array<String>] banned_paths An array of regular expressions that will be evaluated against file modification paths to determine if the file modification should be omitted or not. Defaults to an empty array.
-	# @param [Boolean] verbose A flag indicating if actions should but outputted to the console. Defaults to false.
+	# @param [Boolean] verbose A flag indicating if actions should be outputted to the console. Defaults to false.
 	#
 	# @return [Array<Commit>] An array of commit objects.
 	def self.commits_for(
