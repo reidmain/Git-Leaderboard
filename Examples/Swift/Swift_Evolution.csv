@@ -1,0 +1,235 @@
+Author,Email,Commits,% of Commits,Additions,% of Additions,Deletions,% of Deletions,Files Modified,% of Files Modified
+,,1969,100,73841,100,18741,100,3318,100
+Chris Lattner,clattner@apple.com,329,16.71,2487,3.37,1524,8.13,717,21.61
+Doug Gregor,dgregor@apple.com,237,12.04,5845,7.92,1830,9.76,398,12.0
+Erica Sadun,erica@ericasadun.com,123,6.25,2499,3.38,449,2.4,142,4.28
+Ben Rimmington,me@benrimmington.com,102,5.18,539,0.73,507,2.71,297,8.95
+Dave Abrahams,dabrahams@apple.com,67,3.4,2150,2.91,608,3.24,74,2.23
+Joe Groff,jgroff@apple.com,57,2.89,2955,4.0,699,3.73,86,2.59
+Ted Kremenek,kremenek@apple.com,52,2.64,284,0.38,214,1.14,53,1.6
+Max Moiseev,moiseev@apple.com,39,1.98,2614,3.54,1821,9.72,42,1.27
+Daniel Dunbar,daniel_dunbar@apple.com,37,1.88,1223,1.66,289,1.54,44,1.33
+John McCall,rjmccall@apple.com,34,1.73,771,1.04,367,1.96,37,1.12
+Rick Ballard,rballard@apple.com,34,1.73,1025,1.39,383,2.04,34,1.02
+Dmitri Gribenko,gribozavr@gmail.com,32,1.63,1593,2.16,299,1.6,32,0.96
+Jacob Bandes-Storch,jacob@bandes-stor.ch,30,1.52,1078,1.46,380,2.03,37,1.12
+Jordan Rose,jordan_rose@apple.com,27,1.37,1689,2.29,424,2.26,27,0.81
+Krishna,kkdevenda@gmail.com,27,1.37,67,0.09,47,0.25,27,0.81
+Kyle Murray,krilnon@users.noreply.github.com,27,1.37,64,0.09,29,0.15,28,0.84
+Ben Cohen,airspeedswift@users.noreply.github.com,25,1.27,802,1.09,39,0.21,25,0.75
+Nate Cook,nmersethcook@apple.com,23,1.17,1626,2.2,355,1.89,29,0.87
+Andrew Trick,atrick@apple.com,22,1.12,4463,6.04,1385,7.39,23,0.69
+Austin Zheng,austinzheng@gmail.com,22,1.12,1254,1.7,459,2.45,79,2.38
+Anders Bertelrud,anders@apple.com,22,1.12,928,1.26,287,1.53,35,1.05
+David Hart,david@hartbit.com,20,1.02,1094,1.48,54,0.29,20,0.6
+Ankit Aggarwal,ankit_aggarwal@apple.com,20,1.02,1337,1.81,47,0.25,21,0.63
+Kyle Murray,kyle_murray@apple.com,17,0.86,1812,2.45,565,3.01,82,2.47
+Ben Cohen,ben_cohen@apple.com,17,0.86,833,1.13,74,0.39,17,0.51
+Kevin Ballard,kevin@sb.org,14,0.71,784,1.06,243,1.3,16,0.48
+Matthew Johnson,matthew@anandabits.com,14,0.71,1189,1.61,211,1.13,14,0.42
+Xiaodi Wu,xiaodi.wu@gmail.com,12,0.61,451,0.61,247,1.32,19,0.57
+Tanner Nelson,tanner@bluebite.com,12,0.61,114,0.15,136,0.73,14,0.42
+Bas Broek,BasThomas@users.noreply.github.com,11,0.56,34,0.05,34,0.18,31,0.93
+Karoy Lorentey,klorentey@apple.com,10,0.51,1195,1.62,184,0.98,10,0.3
+Anton Zhilin,antonyzhilin@gmail.com,10,0.51,1239,1.68,521,2.78,10,0.3
+Boris Bügling,bbuegling@apple.com,10,0.51,335,0.45,3,0.02,10,0.3
+Alex Martini,amartini@apple.com,9,0.46,19,0.03,18,0.1,16,0.48
+Slava Pestov,spestov@apple.com,9,0.46,268,0.36,85,0.45,11,0.33
+Ted Kremenek,tkremenek@Teds-MacBook-Pro.local,9,0.46,19,0.03,17,0.09,9,0.27
+Chris Lattner,clattner@nondot.org,8,0.41,111,0.15,244,1.3,24,0.72
+Kostiantyn Koval,konstantin.koval1@gmail.com,8,0.41,62,0.08,47,0.25,9,0.27
+Maxim Moiseev,moiseev@users.noreply.github.com,8,0.41,925,1.25,264,1.41,8,0.24
+Chris Eidhof,chris@eidhof.nl,7,0.36,257,0.35,4,0.02,7,0.21
+Constantino Tsarouhas,ctxppc@gmail.com,6,0.3,83,0.11,88,0.47,7,0.21
+Patrick Pijnappel,patrickpijnappel@gmail.com,6,0.3,153,0.21,27,0.14,6,0.18
+John McCall,rjmccall@gmail.com,6,0.3,609,0.82,6,0.03,6,0.18
+Tony Allevato,tony.allevato@gmail.com,6,0.3,1322,1.79,187,1.0,6,0.18
+John Holdsworth,github@johnholdsworth.com,6,0.3,397,0.54,71,0.38,6,0.18
+Tony Parker,anthony.parker@apple.com,6,0.3,1165,1.58,76,0.41,6,0.18
+Daniel Duan,daniel@duan.org,6,0.3,486,0.66,182,0.97,6,0.18
+Zachary Waldowski,zach@waldowski.me,6,0.3,162,0.22,71,0.38,6,0.18
+Russ Bishop,rbishopjr@apple.com,6,0.3,455,0.62,210,1.12,6,0.18
+Joe Groff,arcata@gmail.com,5,0.25,1341,1.82,0,0.0,5,0.15
+Kevin Ballard,kevin.ballard@postmates.com,5,0.25,16,0.02,17,0.09,5,0.15
+Itai Ferber,itai@itaiferber.net,5,0.25,2642,3.58,8,0.04,5,0.15
+Max Howell,max.howell@apple.com,5,0.25,538,0.73,84,0.45,5,0.15
+Stephen Canon,scanon@apple.com,5,0.25,953,1.29,110,0.59,5,0.15
+Jesse Squires,jessesquires@users.noreply.github.com,5,0.25,9,0.01,9,0.05,5,0.15
+Timothy J. Wood,tjw@omnigroup.com,5,0.25,194,0.26,54,0.29,5,0.15
+Sho Ikeda,suicaicoca@gmail.com,5,0.25,11,0.01,11,0.06,5,0.15
+Tanner,me@tanner.xyz,5,0.25,29,0.04,7,0.04,5,0.15
+Chris Lattner,sabre@nondot.org,5,0.25,22,0.03,51,0.27,5,0.15
+Aaron Brager,getagb@gmail.com,4,0.2,8,0.01,6,0.03,4,0.12
+William Entriken,github.com@phor.net,4,0.2,4,0.01,4,0.02,4,0.12
+Michael Ilseman,milseman@apple.com,4,0.2,314,0.43,4,0.02,4,0.12
+David Farler,dfarler@apple.com,4,0.2,542,0.73,227,1.21,7,0.21
+Jacob Bandes-Storch,jtbandes@gmail.com,4,0.2,6,0.01,6,0.03,4,0.12
+Max Howell,mxcl@me.com,4,0.2,47,0.06,2,0.01,4,0.12
+Harlan Haskins,harlan@harlanhaskins.com,4,0.2,67,0.09,20,0.11,4,0.12
+Kelvin,kelvin13ma@gmail.com,4,0.2,1287,1.74,319,1.7,4,0.12
+Ian Partridge,i.partridge@uk.ibm.com,3,0.15,4,0.01,4,0.02,3,0.09
+Graydon Hoare,ghoare@apple.com,3,0.15,310,0.42,13,0.07,3,0.09
+Torin Kwok,TorinKwok@users.noreply.github.com,3,0.15,233,0.32,6,0.03,3,0.09
+Alan,voidref@users.noreply.github.com,3,0.15,3,0.0,3,0.02,3,0.09
+Erica Sadun,ericasadun@Esopus-Spitzenburg.local,3,0.15,197,0.27,11,0.06,3,0.09
+emaloney,emaloney@gilt.com,3,0.15,165,0.22,0,0.0,3,0.09
+charlieMonroe,untitledsoftware@gmail.com,3,0.15,121,0.16,23,0.12,3,0.09
+Philippe Hausler,phausler@apple.com,3,0.15,598,0.81,99,0.53,3,0.09
+Loïc Lecrenier,loic.lecrenier@me.com,3,0.15,119,0.16,15,0.08,3,0.09
+J. Cheyo Jimenez,masters3d@users.noreply.github.com,3,0.15,14,0.02,12,0.06,3,0.09
+Ankit Aggarwal,ankit.spd@gmail.com,3,0.15,10,0.01,10,0.05,4,0.12
+Hugues Bernet-Rollande,hugues@xdev.fr,3,0.15,9,0.01,6,0.03,3,0.09
+Qbyte248,formelwiki@web.de,3,0.15,4,0.01,4,0.02,3,0.09
+Arnold Schwaighofer,aschwaighofer@apple.com,3,0.15,438,0.59,9,0.05,3,0.09
+Trent Nadeau,tanadeau@gmail.com,3,0.15,93,0.13,2,0.01,3,0.09
+Jesse Squires,jesse.d.squires@gmail.com,3,0.15,118,0.16,113,0.6,68,2.05
+Jesse Rusak,me@jesserusak.com,3,0.15,256,0.35,95,0.51,3,0.09
+Marcus Rossel,marcusrossel@icloud.com,3,0.15,4,0.01,4,0.02,3,0.09
+Elvis Nuñez,3lvis@users.noreply.github.com,3,0.15,12,0.02,12,0.06,3,0.09
+Cristián Arenas Ulloa,cristian.arenas@gmail.com,3,0.15,4,0.01,4,0.02,3,0.09
+JP Simard,jp@jpsim.com,3,0.15,4,0.01,4,0.02,3,0.09
+Chris Willmore,cwillmore@apple.com,3,0.15,599,0.81,0,0.0,3,0.09
+ilyathewhite,ilya@harmonicsense.com,3,0.15,83,0.11,6,0.03,3,0.09
+Matt Wright,mww@apple.com,2,0.1,1145,1.55,29,0.15,2,0.06
+Steve Moser,contact@stevemoser.org,2,0.1,2,0.0,2,0.01,2,0.06
+Saagar Jha,saagarjha28@gmail.com,2,0.1,262,0.35,238,1.27,100,3.01
+Radek Pietruszewski,radexpl@gmail.com,2,0.1,13,0.02,13,0.07,2,0.06
+Michael LeHew,lehewjr@apple.com,2,0.1,226,0.31,28,0.15,2,0.06
+Tomohiro Kumagai,tomohiro@ez-style.jp,2,0.1,4,0.01,3,0.02,2,0.06
+stefanstefan2001,scoartastefan@gmail.com,2,0.1,6,0.01,6,0.03,2,0.06
+Brian Lanier,blanier@apple.com,2,0.1,31,0.04,14,0.07,2,0.06
+Brian King,brianaking@gmail.com,2,0.1,54,0.07,2,0.01,2,0.06
+Brent Royal-Gordon,brent@brentdax.com,2,0.1,969,1.31,1,0.01,2,0.06
+therealbnut,andrew.charles.bennett@gmail.com,2,0.1,195,0.26,5,0.03,2,0.06
+salmanjamil,salmanjamil.140@gmail.com,2,0.1,7,0.01,7,0.04,2,0.06
+Adrian Z,adrian.zubarev@devandartist.com,2,0.1,1088,1.47,0,0.0,2,0.06
+Damir Stuhec,damir.stuhec@gmail.com,2,0.1,8,0.01,8,0.04,2,0.06
+Alejandro,Azoy@users.noreply.github.com,2,0.1,506,0.69,76,0.41,2,0.06
+Andy Bargh,abargh@users.noreply.github.com,2,0.1,2,0.0,2,0.01,2,0.06
+Huon Wilson,huon@apple.com,2,0.1,72,0.1,16,0.09,2,0.06
+Dave Yost,Dave@Yost.com,2,0.1,18,0.02,18,0.1,2,0.06
+Jacob Bandes-Storch,jacob@bandes-storch.net,2,0.1,276,0.37,0,0.0,2,0.06
+Michael Buckley,mbuckley@extensis.com,2,0.1,107,0.14,0,0.0,2,0.06
+Masayuki Ono,mono0926@gmail.com,2,0.1,6,0.01,10,0.05,2,0.06
+Mark Lacey,rudkx@users.noreply.github.com,2,0.1,258,0.35,2,0.01,2,0.06
+Nicholas Maccharoli,nmaccharoli@gmail.com,2,0.1,158,0.21,0,0.0,2,0.06
+oisdk,oisin.kidney@gmail.com,2,0.1,133,0.18,2,0.01,2,0.06
+Chris Lattner,lattner@users.noreply.github.com,2,0.1,790,1.07,20,0.11,2,0.06
+Daniel Worku,dbworku@gmail.com,2,0.1,7,0.01,7,0.04,7,0.21
+Toni Suter,tonisuter@me.com,2,0.1,16,0.02,18,0.1,7,0.21
+Mayur,jhonmathews@gmail.com,2,0.1,2,0.0,2,0.01,2,0.06
+Dylan Thacker-Smith,Dylan.Smith@shopify.com,1,0.05,1,0.0,1,0.01,1,0.03
+Madhava Jay,me@madhavajay.com,1,0.05,1,0.0,1,0.01,1,0.03
+Nick Lockwood,nicklockwood@users.noreply.github.com,1,0.05,1,0.0,1,0.01,1,0.03
+Stephen Celis,stephen.celis@gmail.com,1,0.05,4,0.01,4,0.02,2,0.06
+Norio Nomura,norio.nomura@gmail.com,1,0.05,2,0.0,2,0.01,1,0.03
+Renan Greca,renangreca@gmail.com,1,0.05,1,0.0,1,0.01,1,0.03
+linqingmo,mariopteris@foxmail.com,1,0.05,1,0.0,1,0.01,1,0.03
+John Eismeier,john.eismeier@gmail.com,1,0.05,2,0.0,2,0.01,1,0.03
+Connor Wakamo,cwakamo@me.com,1,0.05,434,0.59,0,0.0,1,0.03
+Harlan Haskins,harlan@apple.com,1,0.05,108,0.15,0,0.0,1,0.03
+Semen Zhydenko,simeon.zhidenko@gmail.com,1,0.05,14,0.02,14,0.07,12,0.36
+Yuka Ezura,ezura@users.noreply.github.com,1,0.05,1,0.0,1,0.01,1,0.03
+Akshay Shrimali,akshaytryingtocode@gmail.com,1,0.05,2,0.0,2,0.01,1,0.03
+Matt Eaton,agnosticdev@gmail.com,1,0.05,1,0.0,1,0.01,1,0.03
+Hernán Canzonetta,hcanzonetta@gmail.com,1,0.05,1,0.0,1,0.01,1,0.03
+Greg Spiers,gspiers@gmail.com,1,0.05,62,0.08,0,0.0,1,0.03
+Tristan Shi,shicechi@gmail.com,1,0.05,3,0.0,3,0.02,1,0.03
+Alexander von Below,Alex@vonBelow.Com,1,0.05,1,0.0,1,0.01,1,0.03
+Peng Wang,peng@pengxwang.com,1,0.05,1,0.0,1,0.01,1,0.03
+Richard Wei,rxwei@users.noreply.github.com,1,0.05,6,0.01,6,0.03,1,0.03
+Ling Wang,an00na@gmail.com,1,0.05,1,0.0,1,0.01,1,0.03
+Antoine Cœur,coeur@gmx.fr,1,0.05,4,0.01,4,0.02,1,0.03
+Fumiya Yamanaka,yamanaka-fumiya@ed.tmu.ac.jp,1,0.05,1,0.0,1,0.01,1,0.03
+Ole Begemann,ole@oleb.net,1,0.05,1,0.0,1,0.01,1,0.03
+Ben Langmuir,ben.langmuir@gmail.com,1,0.05,2,0.0,2,0.01,1,0.03
+stevex,fdstevex@users.noreply.github.com,1,0.05,2,0.0,2,0.01,1,0.03
+James Berry,james@jberry.us,1,0.05,3,0.0,3,0.02,1,0.03
+floatingatoll,rsoderberg@gmail.com,1,0.05,1,0.0,1,0.01,1,0.03
+Kelly Thomas Kline,kellytk@users.noreply.github.com,1,0.05,1,0.0,1,0.01,1,0.03
+Andrew Mackarous,Mackarous@users.noreply.github.com,1,0.05,1,0.0,1,0.01,1,0.03
+Alex Curran,aml.curran@gmail.com,1,0.05,2,0.0,2,0.01,1,0.03
+Avery Magnotti,averymagnotti@outlook.com,1,0.05,2,0.0,2,0.01,1,0.03
+Bret Dahlgren,bret3d@yahoo.com,1,0.05,6,0.01,6,0.03,1,0.03
+Patrick Balestra,me@patrickbalestra.com,1,0.05,2,0.0,2,0.01,1,0.03
+wh1pch81n,wh1pch81n@gmail.com,1,0.05,3,0.0,1,0.01,1,0.03
+Sergey Dunets,realf@users.noreply.github.com,1,0.05,1,0.0,1,0.01,1,0.03
+Bouke Haarsma,bouke@haarsma.eu,1,0.05,1,0.0,1,0.01,1,0.03
+Ankur Patel,ankur.patel@ymail.com,1,0.05,60,0.08,0,0.0,1,0.03
+Vijaya Prakash Kandel,kandelvijaya@gmail.com,1,0.05,1,0.0,1,0.01,1,0.03
+Junwei Zhuge,zhugerock@gmail.com,1,0.05,1,0.0,1,0.01,1,0.03
+Addison Leong,addison_leong@apple.com,1,0.05,459,0.62,335,1.79,135,4.07
+Tim Broder,tim@kidfund.us,1,0.05,1,0.0,1,0.01,1,0.03
+Tim Vermeulen,tvermeulen@me.com,1,0.05,9,0.01,9,0.05,1,0.03
+Erik Eckstein,eeckstein@apple.com,1,0.05,1,0.0,1,0.01,1,0.03
+mominul,mominul2082@gmail.com,1,0.05,4,0.01,4,0.02,1,0.03
+cockscomb,cockscomb@hatena.ne.jp,1,0.05,5,0.01,5,0.03,1,0.03
+Xin Tong,xin_tong@apple.com,1,0.05,1,0.0,1,0.01,1,0.03
+swiftix,rlevenstein@apple.com,1,0.05,63,0.09,0,0.0,1,0.03
+Xin Tong,trentxintong@users.noreply.github.com,1,0.05,72,0.1,0,0.0,1,0.03
+Jeffrey Macko,mackoj@users.noreply.github.com,1,0.05,5,0.01,0,0.0,1,0.03
+knothed,dknothe314@me.com,1,0.05,1,0.0,1,0.01,1,0.03
+James Froggatt,MutatingFunk@users.noreply.github.com,1,0.05,89,0.12,0,0.0,1,0.03
+Nohira Ayumu,zepchan@gmail.com,1,0.05,8,0.01,0,0.0,1,0.03
+nnsnodnb,ahr63_gej@me.com,1,0.05,1,0.0,1,0.01,1,0.03
+Wei Wang,onevcat@gmail.com,1,0.05,3,0.0,3,0.02,1,0.03
+KentaKudo,k.kudo@smartdt.jp,1,0.05,2,0.0,2,0.01,1,0.03
+Javier Soto,javier.api@gmail.com,1,0.05,133,0.18,0,0.0,1,0.03
+Erik Little,nuclear.ace@gmail.com,1,0.05,1,0.0,1,0.01,1,0.03
+karwa,karwa@users.noreply.github.com,1,0.05,72,0.1,0,0.0,1,0.03
+Austin Zheng,austinzheng@NISOS.local,1,0.05,2,0.0,0,0.0,1,0.03
+Marc Knaup,marc@knaup.koeln,1,0.05,1,0.0,1,0.01,1,0.03
+Alex Hoppen,alex@ateamer.de,1,0.05,27,0.04,1,0.01,1,0.03
+Pyry Jahkola,pyry.jahkola@iki.fi,1,0.05,1,0.0,1,0.01,1,0.03
+shinriyo,shinriyo@gmail.com,1,0.05,1,0.0,1,0.01,1,0.03
+Matt West,matt.west@agilityworks.co.uk,1,0.05,1,0.0,1,0.01,1,0.03
+Grant Paul,github@grantpaul.com,1,0.05,70,0.09,0,0.0,1,0.03
+Joe Ferrucci,JoeFerrucci@users.noreply.github.com,1,0.05,1,0.0,1,0.01,1,0.03
+Janosch Hildebrand,jnosh+github@jnosh.com,1,0.05,95,0.13,0,0.0,1,0.03
+Sergey Bolshedvorsky,sergey@bolshedvorsky.com,1,0.05,315,0.43,0,0.0,1,0.03
+Lorenzo Racca,lorenzo.racca@live.it,1,0.05,278,0.38,0,0.0,1,0.03
+Gwendal Roué,groue@laposte.net,1,0.05,168,0.23,0,0.0,1,0.03
+Joe Pamer,jpamer@apple.com,1,0.05,2,0.0,0,0.0,1,0.03
+Joe Pamer,joe@noteven.org,1,0.05,42,0.06,0,0.0,1,0.03
+Manav Gabhawala,manav1907@gmail.com,1,0.05,1,0.0,1,0.01,1,0.03
+Parker Wightman,parkerwightman@gmail.com,1,0.05,4,0.01,7,0.04,1,0.03
+Brent Royal-Gordon,brent@architechies.com,1,0.05,8,0.01,0,0.0,2,0.06
+Ankit Goel,ankit1ank@gmail.com,1,0.05,1,0.0,1,0.01,1,0.03
+dfrib,david.n.friberg@gmail.com,1,0.05,1,0.0,1,0.01,1,0.03
+Khoa Pham,onmyway133@gmail.com,1,0.05,1,0.0,1,0.01,1,0.03
+Kenny Leung,kenny_leung@pobox.com,1,0.05,7,0.01,0,0.0,1,0.03
+Sam Soffes,sam@soff.es,1,0.05,4,0.01,4,0.02,1,0.03
+David Hart,david@atipik.ch,1,0.05,63,0.09,0,0.0,1,0.03
+Daniel Tartaglia,danielt1263@gmail.com,1,0.05,1,0.0,1,0.01,1,0.03
+Andrew White,aeewhite@users.noreply.github.com,1,0.05,1,0.0,1,0.01,1,0.03
+leo-marchand-hs,leo.marchand@hootsuite.com,1,0.05,1,0.0,1,0.01,1,0.03
+shingt,van.s.ver@gmail.com,1,0.05,1,0.0,1,0.01,1,0.03
+Liam Gray,liam@cairngorms.com,1,0.05,12,0.02,10,0.05,1,0.03
+Prayag Verma,prayag.verma@gmail.com,1,0.05,1,0.0,1,0.01,1,0.03
+Jeff Kelley,SlaunchaMan@gmail.com,1,0.05,168,0.23,0,0.0,1,0.03
+James Campbell,jscampbell.05@googlemail.com,1,0.05,49,0.07,0,0.0,1,0.03
+David Scrève,david.screve@dlta-studio.com,1,0.05,142,0.19,0,0.0,1,0.03
+Matthew Bischoff,mb@matthewbischoff.com,1,0.05,1,0.0,1,0.01,1,0.03
+Chris Amanse,christopheramanse@gmail.com,1,0.05,1,0.0,1,0.01,1,0.03
+Samuel E. Giddins,segiddins@segiddins.me,1,0.05,1,0.0,1,0.01,1,0.03
+asfdfdfd,asfdfdfd@asfdfdfd.com,1,0.05,1,0.0,1,0.01,1,0.03
+tablet6,tablet6@gmail.com,1,0.05,4,0.01,4,0.02,3,0.09
+Jan Minar,rdancer@rdancer.org,1,0.05,1,0.0,1,0.01,1,0.03
+cheyo @ Masters3d,cheyo@masters3d.com,1,0.05,13,0.02,0,0.0,2,0.06
+Sanjeet Suhag,suhagsanjeet@gmail.com,1,0.05,1,0.0,1,0.01,1,0.03
+Colin Cornaby,colin.cornaby@digimarc.com,1,0.05,1,0.0,1,0.01,1,0.03
+CC-Dog,cc941201@gmail.com,1,0.05,1,0.0,1,0.01,1,0.03
+Christoffer Tønnessen,christoffer.tonnessen@gmail.com,1,0.05,1,0.0,1,0.01,1,0.03
+Victor Ilyukevich,ilyukevich.victor@gmail.com,1,0.05,1,0.0,1,0.01,1,0.03
+Simon Moos,Shimmen@users.noreply.github.com,1,0.05,1,0.0,1,0.01,1,0.03
+Sheng,sheng168@users.noreply.github.com,1,0.05,1,0.0,1,0.01,1,0.03
+George Dan,george.r.dan@gmail.com,1,0.05,1,0.0,1,0.01,1,0.03
+Aditya KD,aditya@adityakd.me,1,0.05,5,0.01,5,0.03,1,0.03
+Edward Sum Lok Yu,syu72@gatech.edu,1,0.05,1,0.0,1,0.01,1,0.03
+Vittorio Monaco,vittorio.monaco1@gmail.com,1,0.05,1,0.0,1,0.01,1,0.03
+Justin Darnell,justindarnell@users.noreply.github.com,1,0.05,1,0.0,1,0.01,1,0.03
+Carl Hill-Popper,chillpop@gmail.com,1,0.05,1,0.0,1,0.01,1,0.03
+Aaron Crespo,aaroncrespo@users.noreply.github.com,1,0.05,1,0.0,1,0.01,1,0.03
+Miguel Bejar,bejar37@gmail.com,1,0.05,1,0.0,1,0.01,1,0.03
+Isaac Levy,isaac.r.levy@gmail.com,1,0.05,1,0.0,1,0.01,1,0.03
+Pippin Lee,pippinblee@gmail.com,1,0.05,1,0.0,1,0.01,1,0.03

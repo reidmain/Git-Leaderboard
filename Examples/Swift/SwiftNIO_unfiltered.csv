@@ -1,0 +1,48 @@
+Author,Email,Commits,% of Commits,Additions,% of Additions,Deletions,% of Deletions,Files Modified,% of Files Modified
+,,903,100,89207,100,33242,100,3413,100
+Norman Maurer,norman_maurer@apple.com,305,33.78,22226,24.92,8647,26.01,871,25.52
+Johannes Weiss,johannesweiss@apple.com,198,21.93,20996,23.54,13986,42.07,1020,29.89
+Norman Maurer,norman.maurer@googlemail.com,74,8.19,4314,4.84,1095,3.29,203,5.95
+Johannes Weiß,github@tux4u.de,71,7.86,7063,7.92,2007,6.04,301,8.82
+Cory Benfield,cbenfield@apple.com,57,6.31,13780,15.45,2328,7.0,237,6.94
+Cory Benfield,lukasaoz@gmail.com,49,5.43,8075,9.05,1153,3.47,203,5.95
+Cory Benfield,lukasa@apple.com,41,4.54,5971,6.69,720,2.17,154,4.51
+Kevin Clark,kevin.clark@apple.com,15,1.66,1248,1.4,381,1.15,41,1.2
+Tom Doron,tomerd@apple.com,10,1.11,812,0.91,296,0.89,57,1.67
+tomer doron,tomer.doron@gmail.com,9,1.0,309,0.35,196,0.59,19,0.56
+Bas Broek,bas@basbroek.nl,7,0.78,193,0.22,218,0.66,50,1.46
+Helge Heß,helge@alwaysrightinstitute.com,6,0.66,173,0.19,36,0.11,16,0.47
+Max (Swift) Moiseev,moiseev@apple.com,5,0.55,219,0.25,94,0.28,31,0.91
+Ian Partridge,i.partridge@uk.ibm.com,5,0.55,16,0.02,15,0.05,8,0.23
+Daniel Dunbar,daniel_dunbar@apple.com,4,0.44,190,0.21,73,0.22,13,0.38
+adamnemecek,adamnemecek@gmail.com,4,0.44,969,1.09,1000,3.01,77,2.26
+Jason Toffaletti,toffaletti@gmail.com,4,0.44,302,0.34,253,0.76,15,0.44
+Tanner,me@tanner.xyz,3,0.33,45,0.05,17,0.05,4,0.12
+Helge Heß,devteam@zeezide.de,2,0.22,5,0.01,3,0.01,2,0.06
+Shaun Hubbard,shaunhubbard2013@icloud.com,2,0.22,4,0.0,120,0.36,2,0.06
+Karim ElNaggar,karimfarid.naggar@gmail.com,2,0.22,506,0.57,7,0.02,6,0.18
+Matt Eaton,agnosticdev@gmail.com,2,0.22,79,0.09,33,0.1,20,0.59
+Tibor Bödecs,mail.tib@gmail.com,2,0.22,99,0.11,99,0.3,14,0.41
+Ben Cohen,airspeedswift@users.noreply.github.com,2,0.22,75,0.08,51,0.15,2,0.06
+Tiago Martinho,martinho@thoughtworks.com,2,0.22,2,0.0,2,0.01,2,0.06
+Bas Broek,BasThomas@users.noreply.github.com,2,0.22,13,0.01,7,0.02,3,0.09
+Stuart Hinson,stuart.hinson@gmail.com,1,0.11,1,0.0,1,0.0,1,0.03
+Damiaan Dufaux,damiaan@dpro.be,1,0.11,2,0.0,0,0.0,1,0.03
+Ankit Aggarwal,ankit_aggarwal@apple.com,1,0.11,20,0.02,16,0.05,1,0.03
+Arjun Nayini,aanayini@gmail.com,1,0.11,4,0.0,4,0.01,1,0.03
+sun_,sunlubo.sun@gmail.com,1,0.11,7,0.01,5,0.02,2,0.06
+Tim Kientzle,tkientzle@apple.com,1,0.11,904,1.01,0,0.0,1,0.03
+Andrew Bennett,635596+therealbnut@users.noreply.github.com,1,0.11,9,0.01,0,0.0,1,0.03
+Wilson Ding,hello@wilsonding.com,1,0.11,4,0.0,4,0.01,1,0.03
+Sebastian Thiebaud,770074+SebastianThiebaud@users.noreply.github.com,1,0.11,1,0.0,1,0.0,1,0.03
+Moritz Lang,hi@slashmo.codes,1,0.11,1,0.0,1,0.0,1,0.03
+Kyle Bashour,kylebshr@me.com,1,0.11,1,0.0,1,0.0,1,0.03
+Daniel Dunbar,daniel@zuster.org,1,0.11,8,0.01,1,0.0,1,0.03
+Semen Zhydenko,simeon.zhidenko@gmail.com,1,0.11,15,0.02,15,0.05,10,0.29
+Siemen Sikkema,siemensikkema@users.noreply.github.com,1,0.11,131,0.15,134,0.4,2,0.06
+Gopal Sharma,gopal@the-sharmas.org,1,0.11,28,0.03,28,0.08,1,0.03
+Tim,0xTim@users.noreply.github.com,1,0.11,2,0.0,2,0.01,2,0.06
+Frank Kair,frankkair@gmail.com,1,0.11,128,0.14,135,0.41,1,0.03
+Pushkar N Kulkarni,pushkar.nk@in.ibm.com,1,0.11,2,0.0,1,0.0,1,0.03
+Lev Walkin,vlm@lionet.info,1,0.11,254,0.28,55,0.17,11,0.32
+John Connolly,connoljo2@gmail.com,1,0.11,1,0.0,1,0.0,1,0.03

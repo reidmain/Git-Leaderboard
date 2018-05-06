@@ -1,0 +1,29 @@
+[
+	{
+		"git_repository_path": "~/Development/GitHub/swift/",
+		"normalized_email_addresses": "swift_normalized_email_addresses.json",
+		"normalized_names": "swift_normalized_names.json",
+		"banned_email_addresses": [
+			"root@csz25023.canlab.ibm.com"
+		],
+		"output_path": "Swift"
+	},
+	{
+		"git_repository_path": "~/Development/GitHub/swift-evolution/",
+		"normalized_email_addresses": "swift_normalized_email_addresses.json",
+		"normalized_names": "swift_normalized_names.json",
+		"output_path": "Swift_Evolution"
+	},
+	{
+		"git_repository_path": "~/Development/GitHub/swift-package-manager/",
+		"normalized_email_addresses": "swift_normalized_email_addresses.json",
+		"normalized_names": "swift_normalized_names.json",
+		"output_path": "Swift_Package_Manager"
+	},
+	{
+		"git_repository_path": "~/Development/GitHub/swift-nio/",
+		"normalized_email_addresses": "swift_normalized_email_addresses.json",
+		"normalized_names": "swift_normalized_names.json",
+		"output_path": "SwiftNIO"
+	}
+]
