@@ -1,0 +1,202 @@
+{
+	"alexfh@gmail.com": "alexfh@google.com",
+
+	"aleksey.bader@mail.ru": "alexey.bader@intel.com",
+
+	"ben.langmuir@intel.com": "blangmuir@apple.com",
+
+	"charles_li@playstation.sony.com": "charles.li@sony.com",
+
+	"ed@80386.nl": "ed@nuxi.nl",
+
+	"revane@gmail.com": "edwin.vane@intel.com",
+
+	"dennyje@ornl.gov": "jdenny.ornl@gmail.com",
+
+	"juergen@ributzka.de": "juergen@apple.com",
+
+	"jholewinski@nvidia.com": "justin.holewinski@gmail.com",
+
+	"ken.dyck@onsemi.com": "kd@kendyck.com",
+
+	"l.lunak@suse.cz": "l.lunak@centrum.cz",
+
+	"sam.parker@arm.com": "espanz@gmail.com",
+
+	"sameer@sbuddhe.net": "sameer.sahasrabuddhe@amd.com",
+
+	"tom.care@uqconnect.edu.au": "tcare@apple.com",
+
+	"cdavis@mines.edu": "cdavis5x@gmail.com",
+
+	"daniel.malea@gmail.com": "daniel.malea@intel.com",
+
+	"dvlahovski@gmail.com": "dvlahovski@google.com",
+
+	"granata.enrico@gmail.com": "egranata@apple.com",
+
+	"mohit.bhakkad@imgtec.com": "mohit.bhakkad@gmail.com",
+
+	"vince@nethacker.com": "vharron@google.com",
+
+	"abramo.bagnara@bugseng.com": "abramo.bagnara@gmail.com",
+
+	"adhemerval.zanella@linaro.org": "azanella@linux.vnet.ibm.com",
+
+	"ace2001ac@gmail.com": "ahmedcharles@gmail.com",
+
+	"ahatanaka@mips.com": "ahatanaka@apple.com",
+	"ahatanak@gmail.com": "ahatanaka@apple.com",
+
+	"Aleksandar.Beserminji@mips.com": "Aleksandar.Beserminji@imgtec.com",
+
+	"samsonov@google.com": "vonosmas@gmail.com",
+
+	"amara.emerson@arm.com": "aemerson@apple.com",
+
+	"anmparal@cisco.com": "anmol.paralkar@gmail.com",
+
+	"anton@korobeynikov.info": "asl@math.spbu.ru",
+
+	"arnaud.degrandmaison@arm.com": "arnaud.adegm@gmail.com",
+
+	"arnolds@codeaurora.org": "aschwaighofer@apple.com",
+	"arnold.schwaighofer@gmail.com": "aschwaighofer@apple.com",
+
+	"chad.rosier@gmail.com": "mcrosier@apple.com",
+	"mcrosier@codeaurora.org": "mcrosier@apple.com",
+
+	"craig.topper@intel.com": "craig.topper@gmail.com",
+
+	"dan433584@gmail.com": "gohman@apple.com",
+
+	"danielsandersllvm@gmail.com": "daniel_l_sanders@apple.com",
+	"daniel.sanders@imgtec.com": "daniel_l_sanders@apple.com",
+
+	"me@dylanmckay.io": "dylanmckay34@gmail.com",
+
+	"eli.bendersky@intel.com": "eliben@google.com",
+
+	"efriedma@codeaurora.org": "eli.friedman@gmail.com",
+
+	"echristo@gmail.com": "echristo@apple.com",
+
+	"evgeny.leviant@gmail.com": "eleviant@accesssoftek.com",
+
+	"emenezes@codeaurora.org": "e.menezes@samsung.com",
+
+	"farhana.a.aleen@intel.com": "farhana.aleen@gmail.com",
+
+	"fedor.sergeev@oracle.com": "fedor.sergeev@azul.com",
+
+	"francisvm@yahoo.com": "fvisoiumistrih@apple.com",
+
+	"garious@gmail.com": "gregf@codeaurora.org",
+
+	"harlan@harlanhaskins.cm": "harlan@harlanhaskins.com",
+
+	"ikudrin@accesssoftek.com": "ikudrin.dev@gmail.com",
+
+	"ismail@i10z.com": "ismail@donmez.ws",
+
+	"jcarter@mips.com": "jack.carter@imgtec.com",
+
+	"jacob.hansen@esa.int": "jacob.hansen@gaisler.com",
+
+	"jakub.kuderski@arm.com": "kubakuderski@gmail.com",
+
+	"kubastaszak@gmail.com": "jstaszak@apple.com",
+	"kuba@gcc.gnu.org": "jstaszak@apple.com",
+
+	"jaykang10@imrc.kist.re.kr": "jaykang10@gmail.com",
+
+	"joelkevinjones@gmail.com": "joel_k_jones@apple.com",
+
+	"joey.gouly@gmail.com": "joey.gouly@arm.com",
+
+	"Hahnfeld@itc.rwth-aachen.de": "hahnjo@hahnjo.de",
+
+	"jonas.paulsson@ericsson.com": "paulsson@linux.vnet.ibm.com",
+
+	"jediknil@belkadan.com": "jordan_rose@apple.com",
+
+	"kfischer@college.harvard.edu": "keno@alumni.harvard.edu",
+
+	"manman.ren@gmail.com": "mren@apple.com",
+
+	"mclow.lists@gmail.com": "mclow@qualcomm.com",
+
+	"m.ostapenko@partner.samsung.com": "chefmax7@gmail.com",
+
+	"meadori@gmail.com": "meadori@codesourcery.com",
+
+	"joker.eph@gmail.com": "mehdi.amini@apple.com",
+
+	"michael.m.kuperstein@intel.com": "mkuper@google.com",
+	"michael.kuperstein@gmail.com": "mkuper@google.com",
+
+	"michael.hliao@gmail.com": "michael.liao@intel.com",
+
+	"nadav.rotem@intel.com": "nrotem@apple.com",
+
+	"paul_robinson@playstation.sony.com": "paul.robinson@sony.com",
+
+	"petar.jovanovic@mips.com": "petar.jovanovic@imgtec.com",
+
+	"prazek@google.com": "piotr.padlewski@gmail.com",
+
+	"quentin.colombet@gmail.com": "qcolombet@apple.com",
+
+	"reid@kleckner.net": "rnk@google.com",
+
+	"renato.golin@arm.com": "renato.golin@linaro.org",
+	"rengolin@systemcall.org": "renato.golin@linaro.org",
+
+	"romix.llvm@googlemail.com": "rlevenstein@apple.com",
+
+	"scshunt@csclub.uwaterloo.ca": "rideau3@gmail.com",
+
+	"chisophugis@gmail.com": "silvas@purdue.edu",
+
+	"sebpop@gmail.com": "spop@codeaurora.org",
+
+	"satanasyan@mips.com": "simon@atanasyan.com",
+
+	"simon.dardis@mips.com": "simon.dardis@imgtec.com",
+
+	"lvm-dev@redking.me.uk": "llvm-dev@redking.me.uk",
+
+	"stefan.maksimovic@mips.com": "stefan.maksimovic@imgtec.com",
+
+	"stefanus.dutoit@rapidmind.com": "stefanus.du.toit@intel.com",
+
+	"tilmann.scheller@googlemail.com": "t.scheller@samsung.com",
+
+	"Tim.Northover@arm.com": "tnorthover@apple.com",
+	"t.p.northover@gmail.com": "tnorthover@apple.com",
+
+	"tpr.llvm@botech.co.uk": "tim.renouf@amd.com",
+
+	"grosser@fim.uni-passau.de": "tobias@grosser.es",
+
+	"todd.fiala@gmail.com": "tfiala@google.com",
+
+	"tstellar@redhat.com": "thomas.stellard@amd.com",
+
+	"toma.tabacu@gmail.com": "toma.tabacu@imgtec.com",
+
+	"tyler.nowicki@gmail.com": "tnowicki@apple.com",
+
+	"ehostunreach@gmail.com": "Vasileios.Kalintiris@imgtec.com",
+
+	"wmzhao.code@gmail.com": "weimingz@codeaurora.org",
+
+	"Wolfgang_Pieb@playstation.sony.com": "Wolfgang.Pieb@sony.com",
+
+	"Yi.Kong@arm.com": "yikong@google.com",
+	"kongy.dev@gmail.com": "yikong@google.com",
+
+	"Yunzhong_Gao@playstation.sony.com": "Yunzhong.Gao@sony.com",
+
+	"xuzhongxing@foxmail.com": "xuzhongxing@gmail.com"
+}

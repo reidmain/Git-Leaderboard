@@ -1,0 +1,24 @@
+[
+	{
+		"git_repository_path": "~/Development/LLVM/llvm/",
+		"normalized_email_addresses": "llvm_normalized_email_addresses.json",
+		"normalized_names": "llvm_normalized_names.json",
+		"banned_email_addresses": [
+			"nobody@llvm.org",
+			"nothing@nowhere.org"
+		],
+		"output_path": "llvm"
+	},
+	{
+		"git_repository_path": "~/Development/LLVM/clang/",
+		"normalized_email_addresses": "llvm_normalized_email_addresses.json",
+		"normalized_names": "llvm_normalized_names.json",
+		"output_path": "clang"
+	},
+	{
+		"git_repository_path": "~/Development/LLVM/lldb/",
+		"normalized_email_addresses": "llvm_normalized_email_addresses.json",
+		"normalized_names": "llvm_normalized_names.json",
+		"output_path": "lldb"
+	}
+]
