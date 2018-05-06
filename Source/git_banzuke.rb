@@ -70,27 +70,22 @@ module Scripts
 			@output_unfiltered = true
 			@verbose = true
 
-			option_parser.accept(JSON) do |option_json|
-				if File.file?(option_json)
-					json_string = File.read(option_json)
-					JSON.parse(json_string)
-				else
-					JSON.parse(option_json)
-				end
-			end
-
 			option_parser.on(
 				"--configuration-file PATH",
 				"Path to the configuration file.",
-				JSON,
-				) do |option_json|
+				String,
+				) do |option_path|
+					configuration_file_contents = File.read(option_path)
+					configuration_file_json = JSON.parse(configuration_file_contents)
+					configuration_file_directory = File.dirname(option_path)
+
 					entries = []
 
-					for row in option_json
+					for row in configuration_file_json
 						if git_repository_path = row["git_repository_path"]
 							if normalized_email_addresses = row["normalized_email_addresses"]
-								if normalized_email_addresses.is_a?(String) and File.file?(File.expand_path(normalized_email_addresses))
-									json_string = File.read(File.expand_path(normalized_email_addresses))
+								if normalized_email_addresses.is_a?(String) and path = File.expand_path(normalized_email_addresses, configuration_file_directory) and File.file?(path)
+									json_string = File.read(path)
 									normalized_email_addresses = JSON.parse(json_string)
 								elsif !normalized_email_addresses.is_a?(Hash)
 									normalized_email_addresses = {}
@@ -100,8 +95,8 @@ module Scripts
 							end
 
 							if normalized_names = row["normalized_names"]
-								if normalized_names.is_a?(String) and File.file?(File.expand_path(normalized_names))
-									json_string = File.read(File.expand_path(normalized_names))
+								if normalized_names.is_a?(String) and path = File.expand_path(normalized_names, configuration_file_directory) and File.file?(path)
+									json_string = File.read(path)
 									normalized_names = JSON.parse(json_string)
 								elsif !normalized_names.is_a?(Hash)
 									normalized_names = {}
@@ -111,8 +106,8 @@ module Scripts
 							end
 
 							if banned_email_addresses = row["banned_email_addresses"]
-								if banned_email_addresses.is_a?(String) and File.file?(File.expand_path(banned_email_addresses))
-									json_string = File.read(File.expand_path(banned_email_addresses))
+								if banned_email_addresses.is_a?(String) and path = File.expand_path(banned_email_addresses, configuration_file_directory) and File.file?(path)
+									json_string = File.read(path)
 									banned_email_addresses = JSON.parse(json_string)
 								elsif !banned_email_addresses.is_a?(Array)
 									banned_email_addresses = []
@@ -122,8 +117,8 @@ module Scripts
 							end
 
 							if banned_paths = row["banned_paths"]
-								if banned_paths.is_a?(String) and File.file?(File.expand_path(banned_paths))
-									json_string = File.read(File.expand_path(banned_paths))
+								if banned_paths.is_a?(String) and path = File.expand_path(banned_paths, configuration_file_directory) and File.file?(path)
+									json_string = File.read(path)
 									banned_paths = JSON.parse(json_string)
 								elsif !banned_paths.is_a?(Array)
 									banned_paths = []
@@ -132,7 +127,7 @@ module Scripts
 								banned_paths = []
 							end
 
-							output_path = row["output_path"]
+							output_path = File.expand_path(row["output_path"], configuration_file_directory)
 
 							entry = BanzukeEntry.new(
 								git_repository_path: git_repository_path,
